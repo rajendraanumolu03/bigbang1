@@ -1,7 +1,7 @@
 dependencies:
 - name: cert-manager
   repository: https://charts.jetstack.io/
-  version: 0.10.1
+  version: v0.10.1
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
   version: 10.0.0
@@ -12,10 +12,10 @@ dependencies:
   repository: https://charts.gitlab.io/
   version: 0.18.1
 - name: grafana
-  repository: h://grafana.github.io/helm-charts
+  repository: https://grafana.github.io/helm-charts
   version: 4.0.1
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 10.3.4
-digest: sha256:359c29c27577a352c6315a621e222ed8c9f2485ac0120518b4ce7e3233eadfca
-generated: "2020-12-07T17:03:30.441720026-07:00"
+digest: sha256:5d3e7a8c5e3d47ce1ef7a74ddf4808bde291d92e88a6099c7bfac6a5ac338e6b
+generated: "2021-01-05T17:35:55.545352908Z"
