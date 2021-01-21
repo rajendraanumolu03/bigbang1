@@ -1,14 +1,19 @@
 dependencies:
 - name: gitlab
   version: '*.*.*'
+  repository: file://./charts/gitlab
 - name: shared-secrets
   version: '*.*.*'
+  repository: file://./charts/shared-secrets
 - name: certmanager-issuer
   version: '*.*.*'
+  repository: file://./charts/certmanager-issuer
 - name: minio
   version: '*.*.*'
+  repository: file://./charts/minio
 - name: registry
   version: '*.*.*'
+  repository: file://./charts/registry
 - name: cert-manager
   version: 0.10.1
   repository: file://./charts/cert-manager-v0.10.1.tgz
@@ -37,3 +42,4 @@ dependencies:
 - name: nginx-ingress
   condition: nginx-ingress.enabled
   version: '*.*.*'
+  repository: file://./charts/nginx-ingress
