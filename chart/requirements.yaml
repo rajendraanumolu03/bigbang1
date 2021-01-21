@@ -1,14 +1,14 @@
 dependencies:
-# - name: gitlab
-#   version: '*.*.*'
-# - name: shared-secrets
-#   version: '*.*.*'
-# - name: certmanager-issuer
-#   version: '*.*.*'
-# - name: minio
-#   version: '*.*.*'
-# - name: registry
-#   version: '*.*.*'
+- name: gitlab
+  version: '*.*.*'
+- name: shared-secrets
+  version: '*.*.*'
+- name: certmanager-issuer
+  version: '*.*.*'
+- name: minio
+  version: '*.*.*'
+- name: registry
+  version: '*.*.*'
 - name: cert-manager
   version: 0.10.1
   repository: file://./charts/cert-manager-v0.10.1.tgz
@@ -34,6 +34,6 @@ dependencies:
   version: 10.3.4
   repository: file://./charts/redis-10.3.4.tgz
   condition: redis.install
-# - name: nginx-ingress
-#   condition: nginx-ingress.enabled
-#   version: '*.*.*'
+- name: nginx-ingress
+  condition: nginx-ingress.enabled
+  version: '*.*.*'
