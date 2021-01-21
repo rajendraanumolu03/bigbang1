@@ -1,0 +1,49 @@
+{{- if .Values.istio.enabled -}}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  gateways:
+    - main.istio-system.svc.cluster.local
+  hosts:
+    - "code.{{ .Values.hostname }}"
+  http:
+    - route:
+      - destination:
+          host: {{ .Release.Name }}-webservice.{{ .Release.Namespace }}.svc.cluster.local
+          port:
+            number: 8181
+      match:
+      - uri:
+          prefix: /
+    - match:
+      - uri:
+          prefix: /admin/sidekiq
+      route:
+      - destination:
+          host: {{ .Release.Name }}-webservice.{{ .Release.Namespace }}.svc.cluster.local
+          port:
+            number: 8080
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ .Release.Name }}-registry
+  namespace: {{ .Release.Namespace }}
+spec:
+  gateways:
+    - main.istio-system.svc.cluster.local
+  hosts:
+    - "registry.{{ .Values.hostname }}"
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: {{ .Release.Name }}-registry.{{ .Release.Namespace }}.svc.cluster.local
+        port:
+          number: 5000
+{{- end }}

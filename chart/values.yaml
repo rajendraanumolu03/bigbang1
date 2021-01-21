@@ -44,14 +44,16 @@ global:
     allowClusterRoles: true
   ## doc/charts/globals.md#configure-host-settings
   hosts:
-    domain: example.com
+    domain: code.bigbang.dev
     hostSuffix:
     https: true
     externalIP:
     ssh: ~
-    gitlab: {}
+    gitlab:
+      name: code.bigbang.dev
     minio: {}
-    registry: {}
+    registry:
+      name: registry.bigbang.dev
     tls: {}
     smartcard: {}
     kas: {}
@@ -1060,5 +1062,7 @@ minio:
     image: registry1.dso.mil/ironbank/opensource/minio/mc
     tag: RELEASE.2020-10-03T02-54-56Z
 
-
-
+# Big Bang Additions
+hostname: bigbang.dev
+istio:
+  enabled: true
