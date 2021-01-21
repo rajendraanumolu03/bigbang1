@@ -572,8 +572,10 @@ global:
   # configuration of certificates container & custom CA injection
   certificates:
     image:
-      repository: registry.gitlab.com/gitlab-org/build/cng/alpine-certificates
-      tag: 20191127-r2
+      repository: registry1.dso.mil/ironbank/gitlab/gitlab/cfssl-self-sign
+      tag: 1.4.1
+      # pullSecrets:
+      # - name: private-registry
     customCAs: []
     # - secret: custom-CA
     # - secret: more-custom-CAs
@@ -581,17 +583,21 @@ global:
   ## kubectl image used by hooks to carry out specific jobs
   kubectl:
     image:
-      repository: registry.gitlab.com/gitlab-org/build/cng/kubectl
-      tag: 1.13.12
-      pullSecrets: []
+      repository: registry1.dso.mil/ironbank/gitlab/gitlab/kubectl
+      tag: 13.7.2
+      # pullSecrets:
+      # - name: private-registry
     securityContext:
       # in most base images, this is `nobody:nogroup`
       runAsUser: 65534
       fsGroup: 65534
   busybox:
     image:
-      repository: busybox
-      tag: latest
+      # repository: busybox
+      # tag: latest
+      # Busybox can not be hardened with no STIGS. Replacing with UBI-8 container
+      repository: registry1.dso.mil/ironbank/redhat/ubi/ubi8
+      tag: "8.2"
 
   ## docs/charts/globals.md#service-accounts
   serviceAccount:
@@ -838,6 +844,22 @@ redis:
     enabled: false
   metrics:
     enabled: true
+    image:
+      registry: registry1.dso.mil/ironbank/bitnami
+      repository: analytics/redis-exporter
+      tag: 1.6.1
+      # pullSecrets: 
+      # - private-registry
+  image:
+    registry: registry1.dso.mil/ironbank/opensource
+    repository: redis/redis5
+    tag: 5.0.9
+    # pullSecrets: 
+    # - private-registry
+  master:
+    command: "redis-server"
+  slave:
+    command: "redis-server"
 
 ## Installation & configuration of stable/prostgresql
 ## See requirements.yaml for current version
@@ -848,6 +870,9 @@ postgresql:
   install: true
   postgresqlDatabase: gitlabhq_production
   image:
+    ## could not get IronBank hardened image to work with the bitnami postgres sub-chart
+    registry: registry.dso.mil
+    repository: platform-one/big-bang/apps/developer-tools/gitlab/postgresql
     tag: 11.9.0
   usePasswordFile: true
   existingSecret: 'bogus'
@@ -860,15 +885,21 @@ postgresql:
     podAnnotations:
       postgresql.gitlab/init-revision: "1"
   metrics:
-    enabled: true
+    enabled: false
     ## Optionally define additional custom metrics
     ## ref: https://github.com/wrouesnel/postgres_exporter#adding-new-metrics-via-a-config-file
 
 ## Installation & configuration charts/registry
 ## doc/architecture/decisions.md#registry
 ## doc/charts/registry/
-# registry:
-#   enabled: false
+registry:
+  enabled: true
+  host: "registry.bigbang.dev"
+  image:
+    repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-container-registry
+    tag: 13.7.2
+    # pullSecrets:
+    # - name: private-registry 
 
 
 ## Automatic shared secret generation
@@ -876,6 +907,12 @@ postgresql:
 ## doc/charts/shared-secrets
 shared-secrets:
   enabled: true
+  selfsign:
+    image:
+      repository: registry1.dso.mil/ironbank/gitlab/gitlab/cfssl-self-sign
+      tag: 1.4.1
+      # pullSecrets:
+      # - name: private-registry
   rbac:
     create: true
 
@@ -951,19 +988,77 @@ gitlab:
     antiAffinityLabels:
       matchLabels:
         app: 'gitaly'
-## doc/charts/gitlab/migrations
-#   migrations:
-#     enabled: false
-## doc/charts/gitlab/webservice
-#   webservice:
-#     enabled: false
-## doc/charts/gitlab/sidekiq
-#   sidekiq:
-#     enabled: false
-## doc/charts/gitlab/gitaly
-#   gitaly:
-## doc/charts/gitlab/gitlab-shell
-#   gitlab-shell:
-#     enabled: false
-## doc/charts/gitlab/gitlab-grafana
-#   gitlab-grafana:
+    image:
+      repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-task-runner
+      tag: 13.7.2
+      # pullSecrets:
+      # - name: private-registry
+  gitlab-exporter:
+    image:
+      repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-exporter
+      tag: 13.7.2
+      # pullSecrets:
+      # - name: private-registry
+      metrics:
+        enabled: true
+        port: 9168
+        annotations:
+          gitlab.com/prometheus_scrape: "true"
+          gitlab.com/prometheus_port: "9168"
+          gitlab.com/prometheus_path: "/metrics"
+          prometheus.io/scrape: "true"
+          prometheus.io/port: "9168"
+          prometheus.io/path: "/metrics"
+      enabled: true
+  gitlab-shell:
+    image:
+      repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-shell
+      tag: 13.7.2
+      # pullSecrets:
+      # - name: private-registry
+  sidekiq:
+    image:
+      repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-sidekiq
+      tag: 13.7.2
+      # pullSecrets:
+      # - name: private-registry
+  webservice:
+    image:
+      repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-webservice
+      tag: 13.7.2
+      # pullSecrets:
+      # - name: private-registry
+    workhorse:
+      image: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-workhorse
+      tag: 13.7.2
+      # pullSecrets:
+      # - name: private-registry
+  gitaly:
+    image:
+      repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitaly
+      tag: 13.7.2
+      # pullSecrets:
+      # - name: private-registry
+  migrations:
+    image:
+      repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-task-runner
+      tag: 13.7.2
+      # pullSecrets:
+      # - name: private-registry 
+
+# use Ironbank hardened images for MinIO
+minio:
+  image: registry1.dso.mil/ironbank/opensource/minio/minio
+  imageTag: RELEASE.2020-11-19T23-48-16Z
+  # pullSecrets:
+  # - name: private-registry
+  minioMc:
+    # the MinIO sub-chart config script was modified to work with newer mc version in IronBank image
+    #   chart/charts/minio/templates/_helper_create_buckets.sh
+    #       line 65
+    #        /usr/bin/mc policy set $POLICY myminio/$BUCKET 
+    image: registry1.dso.mil/ironbank/opensource/minio/mc
+    tag: RELEASE.2020-10-03T02-54-56Z
+
+
+
