@@ -1,4 +1,19 @@
 dependencies:
+- name: gitlab
+  repository: ""
+  version: '*.*.*'
+- name: shared-secrets
+  repository: ""
+  version: '*.*.*'
+- name: certmanager-issuer
+  repository: ""
+  version: '*.*.*'
+- name: minio
+  repository: ""
+  version: '*.*.*'
+- name: registry
+  repository: ""
+  version: '*.*.*'
 - name: cert-manager
   repository: https://charts.jetstack.io/
   version: v0.10.1
@@ -17,5 +32,8 @@ dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 10.3.4
-digest: sha256:bc91b85265baf2122b38401077f9d7e4bf62bf3a1de3ffdbd57af0fdc06cd4ba
-generated: "2021-01-22T09:01:37.37212994-07:00"
+- name: nginx-ingress
+  repository: ""
+  version: '*.*.*'
+digest: sha256:3e682834bbe773683648edf1d928253b35042213605fd42ec497bc7f76905881
+generated: "2021-01-22T09:06:20.740930825-07:00"
