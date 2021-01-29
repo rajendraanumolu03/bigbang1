@@ -44,7 +44,7 @@ global:
     allowClusterRoles: true
   ## doc/charts/globals.md#configure-host-settings
   hosts:
-    domain: gitlab.bigbang.dev
+    domain: bigbang.dev
     hostSuffix:
     https: true
     externalIP:
