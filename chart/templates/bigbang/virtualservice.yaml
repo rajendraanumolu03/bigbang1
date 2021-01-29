@@ -8,7 +8,7 @@ spec:
   gateways:
     - main.istio-system.svc.cluster.local
   hosts:
-    - "{{ .Values.global.hosts.domain }}"
+    - "{{ .Values.global.hosts.gitlab.name }}"
   http:
     - route:
       - destination:
