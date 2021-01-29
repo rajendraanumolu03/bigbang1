@@ -44,13 +44,13 @@ global:
     allowClusterRoles: true
   ## doc/charts/globals.md#configure-host-settings
   hosts:
-    domain: code.bigbang.dev
+    domain: gitlab.bigbang.dev
     hostSuffix:
     https: true
     externalIP:
     ssh: ~
     gitlab:
-      name: code.bigbang.dev
+      name: gitlab.bigbang.dev
     minio: {}
     registry:
       name: registry.bigbang.dev

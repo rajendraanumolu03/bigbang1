@@ -1,8 +1,8 @@
 global:
   hosts:
-    domain: code.bigbang.dev
+    domain: gitlab.bigbang.dev
     gitlab:
-      name: code.bigbang.dev
+      name: gitlab.bigbang.dev
     registry:
       name: registry.bigbang.dev
   certificates:
