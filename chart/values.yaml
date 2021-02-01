@@ -727,6 +727,7 @@ prometheus:
   pushgateway:
     enabled: false
   server:
+    enabled: false
     retention: 15d
   #
   serverFiles:
