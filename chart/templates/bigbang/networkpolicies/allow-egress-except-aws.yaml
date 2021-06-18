@@ -8,7 +8,7 @@ metadata:
 spec:
   podSelector: 
     matchLabels:
-      app: sidekiq
+      app: sidekiq   # for database and objectStorage egress
   policyTypes:
   - Egress
   egress:
