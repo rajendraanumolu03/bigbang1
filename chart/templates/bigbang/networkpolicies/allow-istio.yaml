@@ -5,7 +5,9 @@ metadata:
   name: allow-istio-webservice
   namespace: {{ .Release.Namespace }}
 spec:
-  podSelector: {}
+  podSelector: 
+    matchLabels:
+      app: webservice
   policyTypes:
   - Ingress
   - Egress
@@ -20,10 +22,6 @@ spec:
     ports:
     - port: 8181 # webservice
       protocol: TCP
-  - to:
-    - podSelector:
-        matchLabels:
-          app: webservice
   egress:
   - to:
     - namespaceSelector:
@@ -39,7 +37,9 @@ metadata:
   name: allow-istio-sidekiq
   namespace: {{ .Release.Namespace }}
 spec:
-  podSelector: {}
+  podSelector: 
+    matchLabels:
+      app: sidekiq
   policyTypes:
   - Ingress
   - Egress
@@ -54,10 +54,6 @@ spec:
     ports:
     - port: 8080 # sidekiq
       protocol: TCP
-  - to:
-    - podSelector:
-        matchLabels:
-          app: sidekiq
   egress:
   - to:
     - namespaceSelector:
@@ -73,7 +69,9 @@ metadata:
   name: allow-istio-registry
   namespace: {{ .Release.Namespace }}
 spec:
-  podSelector: {}
+  podSelector:
+    matchLabels:
+      app: registry
   policyTypes:
   - Ingress
   - Egress
@@ -88,10 +86,6 @@ spec:
     ports:
     - port: 5000 # registry service
       protocol: TCP
-  - to:
-    - podSelector:
-        matchLabels:
-          app: registry
   egress:
   - to:
     - namespaceSelector:
@@ -101,4 +95,3 @@ spec:
         matchLabels:
           istio: pilot
 {{- end }}
-
