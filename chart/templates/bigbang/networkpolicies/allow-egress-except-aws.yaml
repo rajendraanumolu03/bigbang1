@@ -6,7 +6,9 @@ metadata:
   name: allow-egress-except-aws
   namespace: {{ .Release.Namespace }}
 spec:
-  podSelector: {}
+  podSelector: 
+    matchLabels:
+      app: sidekiq
   policyTypes:
   - Egress
   egress:
