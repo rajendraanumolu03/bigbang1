@@ -19,6 +19,8 @@ spec:
         matchLabels:
           app: gitlab-runner-gitlab-runner
     ports:
-    - port: 8181 # webservice
+    - port: 8181 # workhorse
+      protocol: TCP
+    - port: 8080 # webservice
       protocol: TCP
 {{- end }}
