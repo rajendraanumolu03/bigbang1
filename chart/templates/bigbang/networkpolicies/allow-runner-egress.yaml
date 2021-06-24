@@ -12,6 +12,9 @@ spec:
   - Egress
   egress:
   - to:
+    - namespaceSelector:
+        matchLabels:
+          app.kubernetes.io/name: {{ .Release.Namespace }}
     - ipBlock:
         cidr: 0.0.0.0/0
         # ONLY Block requests to AWS metadata IP
