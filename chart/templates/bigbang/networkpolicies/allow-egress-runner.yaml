@@ -1,4 +1,4 @@
-{{- if .Values.networkPolicies.enabled }}
+{{- if and .Values.networkPolicies.enabled .Values.addons.gitlabRunner.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -7,7 +7,7 @@ metadata:
 spec:
   podSelector: 
     matchLabels:
-      app: {{ .Release.Name }}-gitlab-runner   # runners need to access kube-api
+      app: gitlab-runner-gitlab-runner   # runners need to access kube-api
   policyTypes:
   - Egress
   egress:
