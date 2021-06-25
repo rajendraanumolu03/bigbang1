@@ -7,12 +7,17 @@ metadata:
 spec:
   podSelector: 
     matchLabels:
-      app: gitlab-runner-gitlab-runner
+      app: webservice
   policyTypes:
   - Ingress
   ingress:
   - from:
-    - podSelector: {}
+    - namespaceSelector:
+        matchLabels:
+          app.kubernetes.io/name: {{ .Release.Namespace }}
+      podSelector:
+        matchLabels:
+          app: gitlab-runner-gitlab-runner
     ports:
     - port: 8181 # workhorse
       protocol: TCP
