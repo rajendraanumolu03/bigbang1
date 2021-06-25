@@ -12,12 +12,7 @@ spec:
   - Ingress
   ingress:
   - from:
-    - namespaceSelector:
-        matchLabels:
-          app.kubernetes.io/name: {{ .Release.Namespace }}
-      podSelector:
-        matchLabels:
-          app: gitlab-runner-gitlab-runner
+    - podSelector: {} # all pods in namespace
     ports:
     - port: 8181 # workhorse
       protocol: TCP
