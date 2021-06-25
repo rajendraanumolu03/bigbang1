@@ -16,8 +16,10 @@ spec:
         matchLabels:
           app.kubernetes.io/name: {{ .Release.Namespace }}
     - ipBlock:
-        cidr: 0.0.0.0/0
-        # ONLY Block requests to AWS metadata IP
+        cidr: {{ .Values.networkPolicies.controlPlaneCidr }}
+        {{- if eq .Values.networkPolicies.controlPlaneCidr "0.0.0.0/0" }}
+        # ONLY Block requests to cloud metadata IP
         except:
         - 169.254.169.254/32
+        {{- end }}
 {{- end }}
