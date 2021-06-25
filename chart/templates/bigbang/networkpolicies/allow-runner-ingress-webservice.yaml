@@ -21,6 +21,4 @@ spec:
     ports:
     - port: 8181 # workhorse
       protocol: TCP
-    - port: 8080 # webservice
-      protocol: TCP
 {{- end }}
