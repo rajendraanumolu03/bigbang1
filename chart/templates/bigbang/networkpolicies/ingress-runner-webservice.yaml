@@ -13,7 +13,4 @@ spec:
   ingress:
   - from:
     - podSelector: {} # all pods in namespace
-    ports:
-    - port: 8181 # workhorse
-      protocol: TCP
 {{- end }}
