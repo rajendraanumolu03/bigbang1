@@ -2,12 +2,12 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-runner-ingress-webservice
+  name: ingress-runner-webservice
   namespace: {{ .Release.Namespace }}
 spec:
   podSelector: 
     matchLabels:
-      app: webservice
+      app: gitlab-runner-gitlab-runner
   policyTypes:
   - Ingress
   ingress:
@@ -17,7 +17,7 @@ spec:
           app.kubernetes.io/name: {{ .Release.Namespace }}
       podSelector:
         matchLabels:
-          app: gitlab-runner-gitlab-runner
+          app: webservice
     ports:
     - port: 8181 # workhorse
       protocol: TCP
