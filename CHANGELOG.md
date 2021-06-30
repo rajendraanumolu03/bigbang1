@@ -46,6 +46,9 @@
 ## chart/charts/gitlab/charts/gitlab-exporter/templates/bigbang/service-monitor.yaml
 - add ServiceMonitor to Gitlab sub-chart ```gitlab-exporterr``` to enable prometheus monitoring
   
+## chart/charts/gitlab/charts/gitlab-shell/templates/nginx-tcp-configmap.yml
+- added quotes around port in data to resolve an issue with flux not handling integer keys well
+
 ## chart/tests/*
 - add helm test scripts
 
@@ -54,6 +57,9 @@
 # Changelog
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [4.10.3-bb.11] - 2021-06-30
+- fix bug with upstream chart + flux
 
 ## [4.10.3-bb.10] - 2021-06-18
 - more restrictive network policies to limit by podSelector
