@@ -60,8 +60,9 @@
 - chart/charts/gitlab/charts/gitaly/templates/statefulset.yml #10  
   remove duplicate immutable labels
 - chart/charts/gitlab/charts/gitlab-exporter/templates/deployment.yaml  #21-22  
-  remove duplicate hard codded ```app:``` and ```release:``` labels
-
+  remove duplicate hard coded ```app:``` and ```release:``` labels
+- chart/charts/minio/templates/minio_deployment.yaml    #25-28
+  remove duplicate hard coded  ```app:``` ```chart:``` ```release:``` and ```heritage:``` labels 
 
 # Changelog
 
