@@ -1,8 +1,8 @@
 config.yaml
-charts/*.tgz
+# charts/*.tgz
 .DS_Store
 tags
-requirements.lock
+# requirements.lock
 .markdownlintrc
 gems
 .bundle
