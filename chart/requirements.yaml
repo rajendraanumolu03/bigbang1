@@ -35,6 +35,7 @@ dependencies:
 - name: nginx-ingress
   condition: nginx-ingress.enabled
   version: '*.*.*'
-- name: bb-test-lib
-  version: 0.4.0
-  repository: file://./charts/bb-test-lib-0.5.2.tgz
+- name: gluon
+  version: "0.2.2"
+  repository: "oci://registry.dso.mil/platform-one/big-bang/apps/library-charts/gluon"
+
