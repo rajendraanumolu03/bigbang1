@@ -41,7 +41,7 @@ Grafana server environment.
 
 There are no required settings, it should work out of the box if you deploy
 all of the charts together. The administrator credentials are created by
-the `shared-secrets` chart and the administrator username is set to `root`.
+the `shared-secrets` Job and the administrator username is set to `root`.
 Password for Grafana's root user can be extracted by the following command:
 
 ```shell
@@ -52,6 +52,7 @@ kubectl get secret gitlab-grafana-initial-password -ojsonpath='{.data.password}'
 
 | Parameter             | Default | Description                                                          |
 |-----------------------|---------|----------------------------------------------------------------------|
+| `common.labels`       | `{}`    | Supplemental labels that are applied to all objects created by this chart.  |
 | `ingress.tls`         | `{}`    | Hash of Ingress TLS settings if GitLab cert manager is not installed |
 | `ingress.annotations` | `{}`    | Additional annotations to add to Grafana Ingress resource            |
 

@@ -12,7 +12,7 @@ and tested within GitLab.
 
 NOTE:
 Google provides a whitepaper for [deploying production-ready GitLab on
-Google Kubernetes Engine](https://cloud.google.com/solutions/deploying-production-ready-gitlab-on-gke), including all steps and external
+Google Kubernetes Engine](https://cloud.google.com/architecture/deploying-production-ready-gitlab-on-gke), including all steps and external
 resource configuration. These are alternative to this document, and the
 deployed chart will behave slightly differently. For example, the default
 domain is configured with [nip.io](https://nip.io), which may experience issues due to [rate limiting](https://letsencrypt.org/docs/rate-limits/) with
@@ -33,10 +33,9 @@ The script will:
 1. Create a new GKE cluster.
 1. Allow the cluster to modify DNS records.
 1. Setup `kubectl`, and connect it to the cluster.
-1. Initialize Helm and install Tiller.
 
 Google Cloud SDK is a dependency of this script, so make sure it's
-[set up correctly](../tools.md#connecting-to-the-gke-cluster) in order for the script
+[set up correctly](../tools.md#gke) in order for the script
 to work.
 
 The script reads various parameters from environment variables and an argument

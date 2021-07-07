@@ -42,7 +42,7 @@ A cluster with a total of 8vCPU and 30GB of RAM, or more is recommended.
 ### Installing kubectl
 
 We'll point right to the official Kubernetes documentation for
-[installing kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
+[installing kubectl](https://kubernetes.io/docs/tasks/tools/).
 It is simple, covers most operating systems and also covers Google
 Cloud SDK, which you may have installed during the previous step.
 
@@ -53,7 +53,7 @@ Google's documentation:
 
 ### Installing Helm v3
 
-For this guide, we'll make use of the latest release of Helm v3 (v3.0.2 or newer).
+For this guide, we'll make use of the latest release of Helm v3 (v3.3.1 or newer).
 [Official installation instructions](https://helm.sh/docs/intro/install/)
 exist, and are sound, so we'll let you follow those.
 
@@ -147,3 +147,23 @@ be sure are working:
 usually related to DNS, or the need to retry.
 
 For further troubleshooting tips, see our [troubleshooting](../troubleshooting/index.md) guide.
+
+### Helm install returns `roles.rbac.authorization.k8s.io "gitlab-shared-secrets" is forbidden`
+
+After running:
+
+```shell
+helm install gitlab gitlab/gitlab  \
+  --set global.hosts.domain=DOMAIN \
+  --set certmanager-issuer.email=user@example.com
+```
+
+You might see an error similar to:
+
+```shell
+Error: failed pre-install: warning: Hook pre-install templates/shared-secrets-rbac-config.yaml failed: roles.rbac.authorization.k8s.io "gitlab-shared-secrets" is forbidden: user "some-user@some-domain.com" (groups=["system:authenticated"]) is attempting to grant RBAC permissions not currently held:
+{APIGroups:[""], Resources:["secrets"], Verbs:["get" "list" "create" "patch"]}
+```
+
+This means that the `kubectl` context that you are using to connect to the cluster
+does not have the permissions needed to create RBAC resources.

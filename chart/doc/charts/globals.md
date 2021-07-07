@@ -37,6 +37,7 @@ for more information on how the global variables work.
 - [extraEnv](#extraenv)
 - [OAuth](#configure-oauth-settings)
 - [Outgoing email](#outgoing-email)
+- [Platform](#platform)
 
 ## Configure Host settings
 
@@ -121,6 +122,8 @@ The GitLab global host settings for Ingress are located under the `global.ingres
 | `tls.enabled`                  | Boolean | `true`         | When set to `false`, this disables TLS in GitLab. This is useful for cases in which you cannot use TLS termination of Ingresses, such as when you have a TLS-terminating proxy before the Ingress Controller. If you want to disable https completely, this should be set to `false` together with [`global.hosts.https`](#configure-host-settings). |
 | `tls.secretName`               | String  |                | The name of the [Kubernetes TLS Secret](https://kubernetes.io/docs/concepts/services-networking/ingress/#tls) that contains a **wildcard** certificate and key for the domain used in `global.hosts.domain`. |
 | `path`                         | String  | `/`            | Default for `path` entries in [Ingress objects](https://kubernetes.io/docs/concepts/services-networking/ingress/) |
+| `pathType`                     | String  | `Prefix`       | A [Path Type](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types) allows you to specify how a path should be matched. Our current default is `Prefix` but you can use `ImplementationSpecific` or `Exact` depending on your use case. |
+| `provider`                     | String  | `nginx`       | Global setting that defines the Ingress provider to use. `nginx` is used as the default provider.  |
 
 ### Ingress Path
 
@@ -349,6 +352,23 @@ global:
 | `password.secret`  | String  |         | The `password.secret` attribute for Redis defines the name of the Kubernetes `Secret` to pull from. |
 | `scheme`           | String  | `redis` | The URI scheme to be used to generate Redis URLs. Valid values are `redis`, `rediss`, and `tcp`. If using `rediss` (SSL encrypted connection) scheme, the certificate used by the server should be a part of the system's trusted chains. This can be done by adding them to the [custom certificate authorities](#custom-certificate-authorities) list. |
 
+### Configure Redis chart-specific settings
+
+Settings to configure the [Redis chart](https://github.com/bitnami/charts/tree/master/bitnami/redis)
+directly are located under the `redis` key:
+
+```yaml
+redis:
+  install: true
+  image:
+    registry: registry.example.com
+    repository: example/redis
+    tag: x.y.z
+```
+
+Refer to the [full list of settings](https://artifacthub.io/packages/helm/bitnami/redis/11.3.4#parameters)
+for more information.
+
 ### Redis Sentinel support
 
 The current Redis Sentinel support only supports Sentinels that have
@@ -397,8 +417,8 @@ continue to apply with the Sentinel support unless re-specified in the table abo
 ### Multiple Redis support
 
 The GitLab chart includes support for running with separate Redis instances
-for different persistence classes, currently: `cache`, `queues`, `shared_state` and
-`actioncable`
+for different persistence classes, currently: `cache`, `queues`, `shared_state`,
+`actioncable` and `trace_chunks`.
 
 | Instance     | Purpose                                             |
 |:-------------|:----------------------------------------------------|
@@ -406,6 +426,7 @@ for different persistence classes, currently: `cache`, `queues`, `shared_state` 
 | `queues`       | Store Sidekiq background jobs                       |
 | `shared_state` | Store session-related and other persistent data     |
 | `actioncable`  | Pub/Sub queue backend for ActionCable               |
+| `trace_chunks`  | Store job traces temporarily                       |
 
 Any number of the instances may be specified. Any instances not specified
 will be handled by the primary Redis instance specified
@@ -451,6 +472,13 @@ global:
         enabled: true
         secret: cable-secret
         key: cable-password
+    trace_chunks:
+      host: trace_chunks.redis.example
+      port: 6379
+      password:
+        enabled: true
+        secret: trace_chunks-secret
+        key: trace_chunks-password
 ```
 
 The following table describes the attributes for each dictionary of the
@@ -501,10 +529,11 @@ global:
     bucket: registry
     certificate:
     httpSecret:
+    notificationSecret:
     notifications: {}
 ```
 
-For more details on `bucket`, `certificate`, and `httpSecret` settings, see the documentation within the [registry chart](registry/index.md).
+For more details on `bucket`, `certificate`, `httpSecret`, and `notificationSecret` settings, see the documentation within the [registry chart](registry/index.md).
 
 ### notifications
 
@@ -797,6 +826,11 @@ global:
         key: password
       mailbox: inbox
       idleTimeout: 60
+      inboxMethod: "imap"
+      clientSecret:
+        key: secret
+      pollInterval: 60
+
     serviceDeskEmail:
       enabled: false
       address: ""
@@ -810,6 +844,11 @@ global:
         key: password
       mailbox: inbox
       idleTimeout: 60
+      inboxMethod: "imap"
+      clientSecret:
+        key: secret
+      pollInterval: 60
+
     pseudonymizer:
       configMap:
       bucket: gitlab-pseudo
@@ -824,6 +863,8 @@ global:
       enabled: false
       CASecret:
       clientCertificateRequiredHost:
+    sidekiq:
+      routingRules: []
 ```
 
 ### General application settings
@@ -1444,6 +1485,43 @@ global:
 | `sanExtensions`                 | Boolean | `false` | Enable the use of SAN extensions to match users with certificates. |
 | `requiredForGitAccess`          | Boolean | `false` | Require browser session with smartcard sign-in for Git access. |
 
+### Sidekiq routing rules settings
+
+GitLab supports routing a job from a worker to a desired queue before it is
+scheduled. Sidekiq clients match a job against a configured list of routing
+rules. Rules are evaluated from first to last, and as soon as a match for a
+given worker is found, the processing for that worker is stopped (first match wins). If
+the worker doesn't match any rule, it falls back the queue name generated from
+the worker name.
+
+By default, the routing rules are not configured (or denoted with an empty
+array), all the jobs are routed to the queue generated from the worker name.
+
+The routing rules list is an ordered array of tuples of query and
+corresponding queue:
+
+- The query is following the
+  [worker matching query](https://docs.gitlab.com/ee/administration/operations/extra_sidekiq_processes.html#queue-selector) syntax.
+- The `<queue_name>` must be a valid Sidekiq queue name. If the queue name
+  is `nil`, or an empty string, the worker is routed to the queue generated
+  by the name of the worker instead.
+
+The query supports wildcard matching `*`, which matches all workers. As a
+result, the wildcard query must stay at the end of the list or the later rules
+are ignored:
+
+```yaml
+global:
+  appConfig:
+    sidekiq:
+      routingRules:
+      - ["resource_boundary=cpu", "cpu_boundary"]
+      - ["feature_category=pages", null]
+      - ["feature_category=search", "search"]
+      - ["feature_category=memory|resource_boundary=memory", "memory-bound"]
+      - ["*", "default"]
+```
+
 ## Configure Rails settings
 
 A large portion of the GitLab suite is based upon Rails. As such, many containers within this project operate with this stack. These settings apply to all of those containers, and provide an easy access method to setting them globally versus individually.
@@ -1539,7 +1617,7 @@ nginx-ingress:
 You can enable handling [proxy protocol](https://www.haproxy.com/blog/haproxy/proxy-protocol/) on the SSH Ingress to properly handle a connection from an upstream proxy that adds the proxy protocol header.
 By doing so, this will prevent SSH from receiving the additional headers and not break SSH.
 
-One common environment where one needs to enable handling of proxy protocol is when using AWS with an ELB handling the inbound connections to the cluster. You can consult the [AWS layer 4 loadbalancer example](https://gitlab.com/gitlab-org/charts/gitlab/-/blob/master/examples/aws/elb-layer4-loadbalancer.yml) to properly set it up.
+One common environment where one needs to enable handling of proxy protocol is when using AWS with an ELB handling the inbound connections to the cluster. You can consult the [AWS layer 4 loadbalancer example](https://gitlab.com/gitlab-org/charts/gitlab/-/blob/master/examples/aws/elb-layer4-loadbalancer.yaml) to properly set it up.
 
 ```yaml
 global:
@@ -1906,3 +1984,8 @@ More information on the available configuration options is available in the
 
 More detailed examples can be found in the
 [Omnibus SMTP settings documentation](https://docs.gitlab.com/omnibus/settings/smtp.html).
+
+## Platform
+
+The `platform` key is reserved for specific features targeting a specific
+platform like GKE or EKS.

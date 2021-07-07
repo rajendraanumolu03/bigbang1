@@ -6,17 +6,24 @@ require 'yaml'
 
 describe 'Annotations configuration' do
   let(:default_values) do
-    {
-      'certmanager-issuer' => { 'email' => 'test@example.com' },
-      'gitlab' => { 'kas' => { 'enabled' => 'true' } }, # DELETE THIS WHEN KAS BECOMES ENABLED BY DEFAULT
-      'global' => { 'deployment' => { 'annotations' => { 'environment' => 'development' } } }
-    }
+    YAML.safe_load(%(
+      global:
+        deployment:
+          annotations:
+            environment: development
+      certmanager-issuer:
+        email: test@example.com
+      gitlab:
+        kas:
+          enabled: true  # DELETE THIS WHEN KAS BECOMES ENABLED BY DEFAULT
+    ))
   end
 
   let(:ignored_charts) do
     [
-      'Deployment/test-cainjector',
-      'Deployment/test-cert-manager',
+      'Deployment/test-certmanager-cainjector',
+      'Deployment/test-certmanager-webhook',
+      'Deployment/test-certmanager',
       'Deployment/test-gitlab-runner',
       'Deployment/test-prometheus-server'
     ]
@@ -30,7 +37,7 @@ describe 'Annotations configuration' do
       resources_by_kind = t.resources_by_kind('Deployment').reject { |key, _| ignored_charts.include? key }
 
       resources_by_kind.each do |key, _|
-        expect(t.dig(key, 'metadata', 'annotations')).to include(default_values['global']['deployment']['annotations'])
+        expect(t.annotations(key)).to include(default_values['global']['deployment']['annotations'])
       end
     end
   end

@@ -59,12 +59,14 @@
   remove duplicate immutable labels
 - chart/charts/gitlab/charts/gitlab-exporter/templates/deployment.yaml  #21-22  
   remove duplicate hard codded ```app:``` and ```release:``` labels
-- chart/charts/gitlab/charts/gitlab-shell/templates/nginx-tcp-configmap.yml #14  
-  quote port --> ```{{ $port | quote }}```
+
 
 # Changelog
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [5.0.0-bb.0] - 2021-07-8
+- upgrade Gitlab to application version 14.0.0 chart version 5.0.0
 
 ## [4.10.3-bb.12] - 2021-07-01
 - fix networkPolicies to allow monitoring for gitlab-runner
