@@ -3,7 +3,9 @@
 ##  chart/charts/*.tgz
 - run ```helm dependency update``` and commit the downloaded archives
 - comment the *.tgz from the .gitignore file
+- comment the requirements.lock from the .gitignore file
 - commit the tar archives that were downloaded from the helm dependency update command
+- also commit the requirements.lock and changes to .gitignore 
 
 ## chart/requirements.yaml
 - change all external dependency links to point to the local file system
