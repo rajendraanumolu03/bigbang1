@@ -63,6 +63,8 @@
   remove duplicate hard coded ```app:``` and ```release:``` labels
 - chart/charts/minio/templates/minio_deployment.yaml    #25-28
   remove duplicate hard coded  ```app:``` ```chart:``` ```release:``` and ```heritage:``` labels 
+- chart/charts/minio/templates/create-buckets-job.yaml  #15-16
+  remove duplicate hard coded ```app:``` and ```release:``` labels
 
 # Changelog
 
