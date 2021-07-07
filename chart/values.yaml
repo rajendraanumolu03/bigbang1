@@ -733,7 +733,7 @@ upgradeCheck:
 ## Installation & configuration of jetstack/cert-manager
 ## See requirements.yaml for current version
 certmanager:
-  createCustomResource: false
+  installCRDs: true
   nameOverride: certmanager
   # Install cert-manager chart. Set to false if you already have cert-manager
   # installed or if you are not using cert-manager.
@@ -966,7 +966,7 @@ postgresql:
     ## could not get IronBank hardened image to work with the bitnami postgres sub-chart
     registry: registry.dso.mil
     repository: platform-one/big-bang/apps/developer-tools/gitlab/postgresql
-    tag: 11.9.0
+    tag: 13.3
   usePasswordFile: true
   existingSecret: 'bogus'
   initdbScriptsConfigMap: 'bogus'
