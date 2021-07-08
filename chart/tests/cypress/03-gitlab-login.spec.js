@@ -13,6 +13,6 @@ describe('Gitlab Login', () => {
     // cy.get('a[title="Users"]').click()
     cy.get('a[data-qa-selector="pending_approval_tab"]').click()
     cy.get('div[id="__BVID__30"]').click()
-    cy.get('a[href="/admin/users/rando.user/approve"]').click()
+    cy.get('a[href="/admin/users/randouser/approve"]').click()
   })
 })
