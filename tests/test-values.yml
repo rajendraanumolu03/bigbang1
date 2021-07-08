@@ -94,7 +94,7 @@ bbtests:
             name: gitlab-gitlab-initial-root-password
             key: password
     envs:
-      cypress_url: "http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"
+      cypress_baseUrl: "http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"
 
   scripts:
     image: "registry.dso.mil/platform-one/big-bang/apps/developer-tools/gitlab/bbtests:0.0.3"
