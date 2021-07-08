@@ -8,7 +8,7 @@ describe('Create Gitlab Project', () => {
   it('Check user is able to create a project', () => {
     // test login
     cy.visit('/users/sign_in')
-    cy.get('input[id="user_login"]').type('testuser')
+    cy.get('input[id="user_login"]').type('test.user')
     cy.get('input[id="user_password"]').type('12345678')
     cy.get('input[type="submit"]').click()
     
