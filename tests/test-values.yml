@@ -1,11 +1,11 @@
 global:
   hosts:
-    domain: bigbang.dev
+    domain: gitlab.svc.cluster.local
     https: false
     gitlab:
-      name: gitlab.bigbang.dev
+      name: gitlab-webservice-test-svc.gitlab.svc.cluster.local
     registry:
-      name: registry.bigbang.dev
+      name: gitlab-registry-test-svc.gitlab.svc.cluster.local
   certificates:
     image:
       pullSecrets:
