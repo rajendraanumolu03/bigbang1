@@ -13,9 +13,9 @@ describe('Create Gitlab Project', () => {
     cy.get('input[type="submit"]').click()
      
     // create project
-    cy.get('a[href="/projects/new"]').eq(3).click()
+    cy.get('a[class="gl-button btn btn-confirm"]').click()
     cy.get('a[href="#blank_project"]').click()
-    cy.get('input[id="project_name"]').first().type('tryme2') 
+    cy.get('input[id="project_name"]').first().type('tryme3') 
     cy.get('input[id="project_visibility_level_20"]').first().click()
     cy.get('input[id="project_initialize_with_readme"]').click()
     cy.get('input[data-track-property="create_project"]').first().click()
