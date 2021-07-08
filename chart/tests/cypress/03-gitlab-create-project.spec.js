@@ -14,7 +14,7 @@ describe('Create Gitlab Project', () => {
      
     // create project
     cy.get('a[href="/projects/new"]').eq(3).click()
-    // cy.get('a[href="#blank_project"]').click()
+    cy.get('a[href="#blank_project"]').click()
     // cy.get('input[id="project_name"]').first().type('My awesome project') // for some reason, there are 2 other hidden elements with the same attributes but we only need the first one
     // cy.get('input[id="project_visibility_level_20"]').first().click()     // for some reason, there are 2 other hidden elements with the same attributes but we only need the first one
     // cy.get('input[id="project_initialize_with_readme"]').click()
