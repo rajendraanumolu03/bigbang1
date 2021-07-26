@@ -1007,12 +1007,12 @@ shared-secrets:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/cfssl-self-sign
       tag: 1.4.1
+      pullSecrets:
+      - name: private-registry
     keyAlgorithm: "rsa"
     keySize: "4096"
     expiry: "3650d"
     caSubject: "GitLab Helm Chart"
-    pullSecrets:
-    - name: private-registry
   env: production
   serviceAccount:
     enabled: true
