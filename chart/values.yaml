@@ -626,7 +626,7 @@ global:
   certificates:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/alpine-certificates
-      tag: 14.0.0
+      tag: 14.0.5
       pullSecrets:
       - name: private-registry
     customCAs:
@@ -670,7 +670,7 @@ global:
   kubectl:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/kubectl
-      tag: 14.0.0
+      tag: 14.0.5
       pullSecrets:
       - name: private-registry
     securityContext:
@@ -989,7 +989,7 @@ registry:
   enabled: true
   image:
     repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-container-registry
-    tag: 14.0.0
+    tag: 14.0.5
     pullSecrets:
     - name: private-registry
   ingress:
@@ -1115,13 +1115,13 @@ gitlab:
         app: 'gitaly'
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-task-runner
-      tag: 14.0.0
+      tag: 14.0.5
       pullSecrets:
       - name: private-registry
   gitlab-exporter:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-exporter
-      tag: 14.0.0
+      tag: 14.0.5
       pullSecrets:
       - name: private-registry
     metrics:
@@ -1133,19 +1133,19 @@ gitlab:
   migrations:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-task-runner
-      tag: 14.0.0
+      tag: 14.0.5
       pullSecrets:
       - name: private-registry
 ## https://docs.gitlab.com/charts/charts/gitlab/webservice
   webservice:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-webservice
-      tag: 14.0.0
+      tag: 14.0.5
       pullSecrets:
       - name: private-registry
     workhorse:
       image: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-workhorse
-      tag: 14.0.0
+      tag: 14.0.5
       pullSecrets:
       - name: private-registry
     ingress:
@@ -1155,21 +1155,21 @@ gitlab:
   sidekiq:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-sidekiq
-      tag: 14.0.0
+      tag: 14.0.5
       pullSecrets:
       - name: private-registry
 ## https://docs.gitlab.com/charts/charts/gitlab/gitaly
   gitaly:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitaly
-      tag: 14.0.0
+      tag: 14.0.5
       pullSecrets:
       - name: private-registry
 ## https://docs.gitlab.com/charts/charts/gitlab/gitlab-shell
   gitlab-shell:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-shell
-      tag: 14.0.0
+      tag: 14.0.5
       pullSecrets:
       - name: private-registry
 
@@ -1177,7 +1177,7 @@ gitlab:
   praefect:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitaly
-      tag: 14.0.0
+      tag: 14.0.5
 
 ## https://docs.gitlab.com/charts/charts/gitlab/gitlab-grafana
 #   gitlab-grafana:
