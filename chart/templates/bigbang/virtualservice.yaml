@@ -19,7 +19,13 @@ spec:
     - {{ . }}
   {{- end }}
   hosts:
+  {{- if .Values.global.hosts.gitlab.name }}
     - "{{ .Values.global.hosts.gitlab.name }}"
+  {{- else }}
+  {{- range .Values.istio.gitlab.hosts }}
+    - {{  . | quote }}
+  {{- end }}
+  {{- end }}
   http:
     - route:
       - destination:
@@ -60,7 +66,13 @@ spec:
     - {{ . }}
   {{- end }}
   hosts:
+  {{- if .Values.global.hosts.registry.name }}
     - "{{ .Values.global.hosts.registry.name }}"
+  {{- else }}
+  {{- range .Values.istio.registry.hosts }}
+    - {{  . | quote }}
+  {{- end }}
+  {{- end }}
   http:
   - match:
     - uri:
