@@ -1136,6 +1136,17 @@ gitlab:
       - name: private-registry
 ## https://docs.gitlab.com/charts/charts/gitlab/webservice
   webservice:
+    init:
+      resources:
+        # https://docs.gitlab.com/charts/charts/gitlab/webservice/index.html#memory-requestslimits
+        limits:
+          cpu: 300m # the default
+          memory: 2.5G # = 2 * 1.25G assuming there are 2 workerProcesses configured
+        requests:
+          cpu: 300m # the default
+          memory: 2.5G # = 2 * 1.25G assuming there are 2 workerProcesses configured
+
+
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-webservice
       tag: 13.12.9
