@@ -1140,19 +1140,33 @@ gitlab:
       resources:
         # https://docs.gitlab.com/charts/charts/gitlab/webservice/index.html#memory-requestslimits
         limits:
-          cpu: 300m # the default
-          memory: 2.5G # = 2 * 1.25G assuming there are 2 workerProcesses configured
+          cpu: 100m
+          memory: 100m
         requests:
-          cpu: 300m # the default
-          memory: 2.5G # = 2 * 1.25G assuming there are 2 workerProcesses configured
-
-
+          cpu: 100m
+          memory: 100m
+    resources:
+      # https://docs.gitlab.com/charts/charts/gitlab/webservice/index.html#memory-requestslimits
+      limits:
+        cpu: 600m # double the default
+        memory: 2.5G # = 2 * 1.25G assuming there are 2 workerProcesses configured
+      requests:
+        cpu: 600m # double the default
+        memory: 2.5G # = 2 * 1.25G assuming there are 2 workerProcesses configured
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-webservice
       tag: 13.12.9
       pullSecrets:
       - name: private-registry
     workhorse:
+      resources:
+        # https://docs.gitlab.com/charts/charts/gitlab/webservice/index.html#memory-requestslimits
+        limits:
+          cpu: 200m # double the default
+          memory: 200m # double the default
+        requests:
+          cpu: 200m # double the default
+          memory: 200m # double the default
       image: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-workhorse
       tag: 13.12.9
       pullSecrets:
