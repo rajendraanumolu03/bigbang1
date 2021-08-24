@@ -1140,11 +1140,11 @@ gitlab:
       resources:
         # https://docs.gitlab.com/charts/charts/gitlab/webservice/index.html#memory-requestslimits
         limits:
-          cpu: 600m
-          memory: 2G
+          cpu: 300m
+          memory: 1G
         requests:
-          cpu: 600m
-          memory: 2G
+          cpu: 300m
+          memory: 1G
     resources:
       # https://docs.gitlab.com/charts/charts/gitlab/webservice/index.html#memory-requestslimits
       limits:
@@ -1162,11 +1162,11 @@ gitlab:
       resources:
         # https://docs.gitlab.com/charts/charts/gitlab/webservice/index.html#memory-requestslimits
         limits:
-          cpu: 200m # double the default
-          memory: 1G # double the default
+          cpu: 600m
+          memory: 2.5G
         requests:
-          cpu: 200m # double the default
-          memory: 1G # double the default
+          cpu: 600m
+          memory: 2.5G
       image: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-workhorse
       tag: 13.12.9
       pullSecrets:
