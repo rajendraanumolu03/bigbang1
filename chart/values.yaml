@@ -723,7 +723,11 @@ upgradeCheck:
   tolerations: []
   resources:
     requests:
-      cpu: 50m
+      cpu: 500m
+      memory: 500M
+    limits:
+      cpu: 500m
+      memory: 500M
 
 ## Settings to for the Let's Encrypt ACME Issuer
 # certmanager-issuer:
@@ -1021,7 +1025,11 @@ shared-secrets:
     name: # Specify a pre-existing ServiceAccount name
   resources:
     requests:
-      cpu: 50m
+      cpu: 300m
+      memory: 200M
+    limits:
+      cpu: 300m
+      memory: 200M
   securityContext:
     # in debian/alpine based images, this is `nobody:nogroup`
     runAsUser: 65534
