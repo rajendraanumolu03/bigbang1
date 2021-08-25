@@ -1156,6 +1156,21 @@ gitlab:
       tag: 13.12.9
       pullSecrets:
       - name: private-registry
+    resources: #requests and limits must be equal, per the charter
+      requests:
+        memory: 5G
+        cpu: 1500m
+      limits:
+        memory: 5G
+        cpu: 1500m
+    init:
+      resources: #requests and limits must be equal, per the charter
+        requests:
+          memory: 5G
+          cpu: 1500m
+        limits:
+          memory: 5G
+          cpu: 1500m
 ## https://docs.gitlab.com/charts/charts/gitlab/gitaly
   gitaly:
     image:
