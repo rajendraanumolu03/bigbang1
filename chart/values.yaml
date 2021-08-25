@@ -1173,10 +1173,10 @@ gitlab:
     resources:
       limits:
         cpu: 300m
-        memory: 10M
+        memory: 100M
       requests:
         cpu: 300m
-        memory: 10M
+        memory: 100M
     init:
       resources:
         limits:
