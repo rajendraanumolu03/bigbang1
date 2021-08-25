@@ -138,6 +138,21 @@ global:
     tls:
       enabled: false
       # secretName:
+    init:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 100m
+          memory: 256Mi
+    resources:
+      requests:
+        cpu: 4
+        memory: 8Gi
+      limits:
+        cpu: 4
+        memory: 8Gi
 
   praefect:
     enabled: false
