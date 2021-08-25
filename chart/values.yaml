@@ -1181,10 +1181,10 @@ gitlab:
       resources:
         limits:
           cpu: 300m
-          memory: 10M
+          memory: 500M
         requests:
           cpu: 300m
-          memory: 10M
+          memory: 500M
 
 ## doc/charts/gitlab/praefect  # added by BigBang
   praefect:
