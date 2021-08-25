@@ -138,21 +138,6 @@ global:
     tls:
       enabled: false
       # secretName:
-    init:
-      resources:
-        requests:
-          cpu: 100m
-          memory: 256Mi
-        limits:
-          cpu: 100m
-          memory: 256Mi
-    resources:
-      requests:
-        cpu: 4
-        memory: 8Gi
-      limits:
-        cpu: 4
-        memory: 8Gi
 
   praefect:
     enabled: false
@@ -1178,6 +1163,21 @@ gitlab:
       tag: 13.12.9
       pullSecrets:
       - name: private-registry
+    init:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 100m
+          memory: 256Mi
+    resources:
+      requests:
+        cpu: 4
+        memory: 8Gi
+      limits:
+        cpu: 4
+        memory: 8Gi
 ## https://docs.gitlab.com/charts/charts/gitlab/gitlab-shell
   gitlab-shell:
     image:
