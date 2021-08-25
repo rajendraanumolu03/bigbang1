@@ -1170,6 +1170,21 @@ gitlab:
       tag: 13.12.9
       pullSecrets:
       - name: private-registry
+    resources:
+      limits:
+        cpu: 300m
+        memory: 10M
+      requests:
+        cpu: 300m
+        memory: 10M
+    init:
+      resources:
+        limits:
+          cpu: 300m
+          memory: 10M
+        requests:
+          cpu: 300m
+          memory: 10M
 
 ## doc/charts/gitlab/praefect  # added by BigBang
   praefect:
