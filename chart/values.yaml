@@ -988,6 +988,21 @@ postgresql:
 ## https://docs.gitlab.com/charts/charts/registry/
 registry:
   enabled: true
+  init:
+    resources:
+      limits:
+        cpu: 200m
+        memory: 500m
+      requests:
+        cpu: 200m
+        memory: 500m
+  resources:
+    limits:
+      cpu: 200m
+      memory: 1024Mi
+    requests:
+      cpu: 200m
+      memory: 1024Mi
   image:
     repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-container-registry
     tag: 13.12.9
