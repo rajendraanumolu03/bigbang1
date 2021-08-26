@@ -963,6 +963,13 @@ postgresql:
   postgresqlPostgresPassword: bogus
   install: true
   postgresqlDatabase: gitlabhq_production
+  resources:
+    limits:
+      cpu: 500m
+      memory: 500Mi
+    requests:
+      cpu: 500m
+      memory: 500Mi
   image:
     ## could not get IronBank hardened image to work with the bitnami postgres sub-chart
     registry: registry.dso.mil
