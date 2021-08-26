@@ -944,6 +944,13 @@ redis:
       tag: 1.18.0
       pullSecrets:
       - private-registry
+    resources:
+      limits: 
+        cpu: 250m
+        memory: 256Mi
+      requests: 
+        cpu: 250m
+        memory: 256Mi
   image:
     registry: registry1.dso.mil/ironbank/opensource
     repository: redis/redis5
@@ -952,8 +959,46 @@ redis:
     - private-registry
   master:
     command: "redis-server"
+    resources: 
+      limits: 
+        cpu: 250m
+        memory: 256Mi
+      requests: 
+        cpu: 250m
+        memory: 256Mi
   slave:
     command: "redis-server"
+    resources: 
+      limits: 
+        cpu: 250m
+        memory: 256Mi
+      requests: 
+        cpu: 250m
+        memory: 256Mi
+  sentinel:
+    resources: 
+      limits: 
+        cpu: 250m
+        memory: 256Mi
+      requests: 
+        cpu: 250m
+        memory: 256Mi
+  volumePermissions:
+    resources: 
+      limits: 
+        cpu: 250m
+        memory: 256Mi
+      requests: 
+        cpu: 250m
+        memory: 256Mi
+  sysctlImage:
+    resources: 
+      limits: 
+        cpu: 250m
+        memory: 256Mi
+      requests: 
+        cpu: 250m
+        memory: 256Mi
 
 ## Installation & configuration of stable/prostgresql
 ## See requirements.yaml for current version
