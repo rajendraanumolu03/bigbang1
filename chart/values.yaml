@@ -1139,10 +1139,10 @@ gitlab:
     resources:
       limits:
         cpu: 500m
-        memory: 400Mi
+        memory: 1G
       requests:
         cpu: 500m
-        memory: 400Mi
+        memory: 1G
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-task-runner
       tag: 13.12.9
