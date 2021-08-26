@@ -1198,7 +1198,6 @@ minio:
     requests:
       cpu: 200m
       memory: 300Mi
-
   # use Ironbank hardened images for MinIO
   image: registry1.dso.mil/ironbank/opensource/minio/minio
   imageTag: RELEASE.2021-04-06T23-11-00Z
