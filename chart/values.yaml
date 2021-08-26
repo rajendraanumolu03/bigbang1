@@ -1126,9 +1126,23 @@ gitlab:
       enabled: true
       port: 9168
     enabled: false
-
 ## https://docs.gitlab.com/charts/charts/gitlab/migrations
   migrations:
+    init:
+      resources:
+        limits:
+          cpu: 200m
+          memory: 1G
+        requests:
+          cpu: 200m
+          memory: 1G
+    resources:
+      limits:
+        cpu: 500m
+        memory: 400Mi
+      requests:
+        cpu: 500m
+        memory: 400Mi
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-task-runner
       tag: 13.12.9
@@ -1148,7 +1162,6 @@ gitlab:
       - name: private-registry
     ingress:
       enabled: false  # Local setting in subchart must be overridden
-
 ## https://docs.gitlab.com/charts/charts/gitlab/sidekiq
   sidekiq:
     image:
@@ -1170,7 +1183,6 @@ gitlab:
       tag: 13.12.9
       pullSecrets:
       - name: private-registry
-
 ## doc/charts/gitlab/praefect  # added by BigBang
   praefect:
     image:
