@@ -1180,8 +1180,26 @@ gitlab:
 ## https://docs.gitlab.com/charts/charts/gitlab/gitlab-grafana
 #   gitlab-grafana:
 
-# use Ironbank hardened images for MinIO
+## Override minio sub-chart values
 minio:
+  # set resource QoS
+  init:
+    resources:
+      limits:
+        cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 100m
+        memory: 100Mi
+  resources:
+    limits:
+      cpu: 200m
+      memory: 300Mi
+    requests:
+      cpu: 200m
+      memory: 300Mi
+
+  # use Ironbank hardened images for MinIO
   image: registry1.dso.mil/ironbank/opensource/minio/minio
   imageTag: RELEASE.2021-04-06T23-11-00Z
   pullSecrets:
