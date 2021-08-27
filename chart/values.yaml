@@ -1127,10 +1127,10 @@ gitlab:
     resources:
       requests:
         cpu: 2
-        memory: 4Gi
+        memory: 3.9Gi
       limits:
         cpu: 2
-        memory: 4Gi
+        memory: 3.9Gi
     backups:
       cron:
         resources:
