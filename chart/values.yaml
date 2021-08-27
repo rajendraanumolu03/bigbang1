@@ -992,10 +992,10 @@ registry:
     resources:
       limits:
         cpu: 200m
-        memory: 1G
+        memory: 200Mi
       requests:
         cpu: 200m
-        memory: 1G
+        memory: 200Mi
   resources:
     limits:
       cpu: 200m
