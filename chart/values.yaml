@@ -1166,11 +1166,11 @@ gitlab:
     init:
       resources: #requests and limits must be equal, per the charter
         requests:
-          memory: 5G
-          cpu: 1500m
+          memory: 1G
+          cpu: 200m
         limits:
-          memory: 5G
-          cpu: 1500m
+          memory: 1G
+          cpu: 200m
 ## https://docs.gitlab.com/charts/charts/gitlab/gitaly
   gitaly:
     image:
