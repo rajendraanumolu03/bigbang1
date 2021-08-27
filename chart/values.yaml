@@ -1173,11 +1173,11 @@ gitlab:
           memory: 256Mi
     resources:
       requests:
-        cpu: 4
-        memory: 8Gi
+        cpu: 200m
+        memory: 300Mi
       limits:
-        cpu: 4
-        memory: 8Gi
+        cpu: 200m
+        memory: 300Mi
 ## https://docs.gitlab.com/charts/charts/gitlab/gitlab-shell
   gitlab-shell:
     image:
