@@ -1117,7 +1117,7 @@ gitlab:
       pullSecrets:
       - name: private-registry
   gitlab-exporter:
-    enabled: true
+    enabled: false
     init:
       resources:
         limits:
