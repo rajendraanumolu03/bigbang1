@@ -1116,6 +1116,31 @@ gitlab:
       tag: 13.12.9
       pullSecrets:
       - name: private-registry
+    init:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 350M
+        limits:
+          cpu: 50m
+          memory: 350M
+    resources:
+      requests:
+        cpu: 2
+        memory: 4Gi
+      limits:
+        cpu: 2
+        memory: 4Gi
+    backups:
+      cron:
+        resources:
+          requests:
+            cpu: 50m
+            memory: 350M
+          limits:
+            cpu: 50m
+            memory: 350M
+
   gitlab-exporter:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-exporter
