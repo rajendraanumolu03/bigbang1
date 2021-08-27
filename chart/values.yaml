@@ -1158,10 +1158,10 @@ gitlab:
       - name: private-registry
     resources: #requests and limits must be equal, per the charter
       requests:
-        memory: 4.5G
+        memory: 4G
         cpu: 1500m
       limits:
-        memory: 4.5G
+        memory: 4G
         cpu: 1500m
     init:
       resources: #requests and limits must be equal, per the charter
