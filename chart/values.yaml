@@ -1173,18 +1173,18 @@ gitlab:
     resources:
       limits:
         cpu: 300m
-        memory: 10M
+        memory: 100Mi
       requests:
         cpu: 300m
-        memory: 10M
+        memory: 100Mi
     init:
       resources:
         limits:
-          cpu: 300m
-          memory: 10M
+          cpu: 200m
+          memory: 200Mi
         requests:
-          cpu: 300m
-          memory: 10M
+          cpu: 200m
+          memory: 200Mi
 
 ## doc/charts/gitlab/praefect  # added by BigBang
   praefect:
