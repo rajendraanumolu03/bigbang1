@@ -1140,11 +1140,11 @@ gitlab:
       resources:
         # https://docs.gitlab.com/charts/charts/gitlab/webservice/index.html#memory-requestslimits
         limits:
-          cpu: 300m
-          memory: 1G
+          cpu: 200m
+          memory: 200Mi
         requests:
-          cpu: 300m
-          memory: 1G
+          cpu: 200m
+          memory: 200Mi
     resources:
       # https://docs.gitlab.com/charts/charts/gitlab/webservice/index.html#memory-requestslimits
       limits:
