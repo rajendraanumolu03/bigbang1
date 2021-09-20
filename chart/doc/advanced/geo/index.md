@@ -141,7 +141,6 @@ gitlab_rails['geo_node_name'] = 'gitlab-primary.example.com'
 gitlab_rails['auto_migrate'] = false
 ## turn off everything but the DB
 sidekiq['enable']=false
-unicorn['enable']=false
 puma['enable']=false
 gitlab_workhorse['enable']=false
 nginx['enable']=false
@@ -331,7 +330,6 @@ gitlab_rails['auto_migrate'] = false
 geo_secondary['auto_migrate'] = false
 ## turn off everything but the DB
 sidekiq['enable']=false
-unicorn['enable']=false
 puma['enable']=false
 gitlab_workhorse['enable']=false
 nginx['enable']=false
@@ -468,6 +466,7 @@ Secondary Kubernetes deployment.
 
 - `gitlab-geo-gitlab-shell-host-keys`
 - `gitlab-geo-rails-secret`
+- `gitlab-registry-secret`, if Registry replication is enabled.
 
 1. Change your `kubectl` context to that of your Primary.
 1. Collect these secrets from the Primary deployment
@@ -475,6 +474,7 @@ Secondary Kubernetes deployment.
   ```shell
   kubectl get --namespace gitlab -o yaml secret gitlab-geo-gitlab-shell-host-keys > ssh-host-keys.yaml
   kubectl get --namespace gitlab -o yaml secret gitlab-geo-rails-secret > rails-secrets.yaml
+  kubectl get --namespace gitlab -o yaml secret gitlab-registry-secret > registry-secrets.yaml
   ```
 
 1. Change your `kubectl` context to that of your Secondary.
@@ -483,6 +483,7 @@ Secondary Kubernetes deployment.
    ```shell
    kubectl --namespace gitlab apply -f ssh-host-keys.yaml
    kubectl --namespace gitlab apply -f rails-secrets.yaml
+   kubectl --namespace gitlab apply -f registry-secrets.yaml
    ```
 
 We'll now need to create a secret containing the database passwords. Replace the
@@ -549,10 +550,6 @@ In order to deploy this chart as a Geo Secondary, we'll start [from this example
    helm upgrade --install gitlab-geo gitlab/gitlab --namespace gitlab -f secondary.yaml
    ```
 
-   NOTE:
-   With Helm v2, one may need to specify the namespace that the release was
-   deployed to with the `--namespace <namespace>` option.
-
 1. Wait for the deployment to complete, and the application to come online.
 
 ## Add Secondary Geo instance via Primary
@@ -560,15 +557,16 @@ In order to deploy this chart as a Geo Secondary, we'll start [from this example
 Now that both databases are configured and applications are deployed, we must tell
 the Primary that the Secondary exists:
 
-1. Visit the **primary** instance's **Admin Area > Geo**
-   (`/admin/geo/nodes`) in your browser.
-1. Click the **New node** button.
+1. Visit the **primary** instance, and on the top bar, select
+   **Menu >** **{admin}** **Admin**.
+1. On the left sidebar, select **Geo**.
+1. Select **New node**.
 1. Add the **secondary** instance. Use the full URL for the URL.
-   **Do NOT** check the **This is a primary node** checkbox.
-1. Fill in Name with the `global.geo.nodeName`. These values must always match exactly, character for character.
+   **Do not** select the **This is a primary node** checkbox.
+1. Enter a Name with the `global.geo.nodeName`. These values must always match exactly, character for character.
 1. Optionally, choose which groups or storage shards should be replicated by the
    **secondary** instance. Leave blank to replicate all.
-1. Click the **Add node** button.
+1. Select **Add node**.
 
 Once added to the admin panel, the **secondary** instance will automatically start
 replicating missing data from the **primary** instance in a process known as **backfill**.

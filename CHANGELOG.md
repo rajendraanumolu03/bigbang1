@@ -5,9 +5,6 @@
 - comment the *.tgz from the .gitignore file
 - commit the tar archives that were downloaded from the helm dependency update command
 
-## chart/requirements.yaml
-- change all external dependency links to point to the local file system
-
 ## chart/values.yaml
 - disable all internal services other than postgres, minio, and redis
 - add BigBang additional values at bottom of values.yaml
@@ -54,16 +51,6 @@
 
 ## chart/.helmignore
 - change `scripts/` to `/scripts/` so that the helm test scripts are not ignored
-
-## fixes for flux helmrelease errors
-- chart/charts/gitlab/charts/geo-logcursor/templates/deployment.yaml #24-25  
-  remove duplicate hard coded ```app:``` and ```realm:``` labels
-- chart/charts/gitlab/charts/gitaly/templates/statefulset.yml #10  
-  remove duplicate immutable labels
-- chart/charts/gitlab/charts/gitlab-exporter/templates/deployment.yaml  #21-22  
-  remove duplicate hard codded ```app:``` and ```release:``` labels
-- chart/charts/gitlab/charts/gitlab-shell/templates/nginx-tcp-configmap.yml #14  
-  quote port --> ```{{ $port | quote }}```
 
 # Changelog
 

@@ -15,9 +15,8 @@ metadata:
   namespace: {{ $.Release.Namespace }}
   labels:
     {{- include "gitlab.standardLabels" $ | nindent 4 }}
-    {{- include "gitlab.commonLabels" $ | nindent 4 }}
     {{- include "webservice.labels" . | nindent 4 }}
-    {{- include "webservice.commonLabels" (dict "deployment" .common.labels "webservice" $.Values.common.labels) | nindent 4 }}
+    {{- include "webservice.commonLabels" . | nindent 4 }}
     {{- if .deployment.labels -}}
     {{-   toYaml .deployment.labels | nindent 4 }}
     {{- end }}
@@ -33,8 +32,7 @@ spec:
   replicas: {{ .hpa.minReplicas }}
   selector:
     matchLabels:
-      app: {{ template "name" $ }}
-      release: {{ $.Release.Name }}
+      {{- include "gitlab.selectorLabels" $ | nindent 6 }}
       {{ include "webservice.labels" . | nindent 6 }}
   {{- if .deployment.strategy }}
   strategy:
@@ -44,17 +42,13 @@ spec:
     metadata:
       labels:
         {{- include "gitlab.standardLabels" $ | nindent 8 }}
-        {{- include "gitlab.commonLabels" $ | nindent 8 }}
         {{- include "webservice.labels" . | nindent 8 }}
         {{- include "gitlab.podLabels" $ | nindent 8 }}
-        {{- include "webservice.commonLabels" (dict "deployment" .common.labels "webservice" $.Values.common.labels) | nindent 8 }}
+        {{- include "webservice.commonLabels" . | nindent 8 }}
         {{- include "webservice.podLabels" . | nindent 8 }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yml") $ | sha256sum }}
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
-      {{- if $.Values.global.platform.eksRoleArn }}
-        eks.amazonaws.com/role-arn: {{ $.Values.global.platform.eksRoleArn | quote }}
-      {{- end }}
       {{- range $key, $value := .pod.annotations }}
         {{ $key }}: {{ $value | quote }}
       {{- end }}
@@ -81,8 +75,7 @@ spec:
             - topologyKey: "kubernetes.io/hostname"
               labelSelector:
                 matchLabels:
-                  app: {{ template "name" $ }}
-                  release: {{ $.Release.Name }}
+                  {{- include "gitlab.selectorLabels" $ | nindent 18 }}
                   {{- include "webservice.labels" . | nindent 18}}
       {{- else if eq (default $.Values.global.antiAffinity $.Values.antiAffinity) "soft" }}
       affinity:
@@ -93,13 +86,13 @@ spec:
               topologyKey: kubernetes.io/hostname
               labelSelector:
                 matchLabels:
-                  app: {{ template "name" $ }}
-                  release: {{ $.Release.Name }}
+                  {{- include "gitlab.selectorLabels" $ | nindent 18 }}
                   {{- include "webservice.labels" . | nindent 18}}
       {{- end }}
       {{- if or $.Values.serviceAccount.enabled $.Values.global.serviceAccount.enabled }}
       serviceAccountName: {{ include "gitlab.serviceAccount.name" $ }}
       {{- end }}
+      automountServiceAccountToken: false
       initContainers:
         {{- include "gitlab.extraInitContainers" $ | nindent 8 }}
         {{- include "gitlab.certificates.initContainer" $ | nindent 8 }}
@@ -212,11 +205,6 @@ spec:
               value: "{{ .puma.workerMaxMemory }}"
             - name: DISABLE_PUMA_WORKER_KILLER
               value: "{{ .puma.disableWorkerKiller }}"
-            {{- else }}
-            - name: UNICORN_MEMORY_MIN
-              value: "{{ .unicorn.memory.min }}"
-            - name: UNICORN_MEMORY_MAX
-              value: "{{ .unicorn.memory.max }}"
             {{- end }}
             - name: SHUTDOWN_BLACKOUT_SECONDS
               value: "{{ .shutdown.blackoutSeconds }}"
@@ -279,11 +267,7 @@ spec:
           lifecycle:
             preStop:
               exec:
-                {{- if eq (lower $.Values.webServer) "unicorn" }}
-                command: ["/bin/bash", "-c", "pkill -SIGQUIT -f 'unicorn master'"]
-                {{- else }}
                 command: ["/bin/bash", "-c", "pkill -SIGINT -o ruby"]
-                {{- end }}
           resources:
             {{- toYaml .resources | nindent 12 }}
         - name: gitlab-workhorse

@@ -123,16 +123,17 @@ The GitLab global host settings for Ingress are located under the `global.ingres
 | `tls.secretName`               | String  |                | The name of the [Kubernetes TLS Secret](https://kubernetes.io/docs/concepts/services-networking/ingress/#tls) that contains a **wildcard** certificate and key for the domain used in `global.hosts.domain`. |
 | `path`                         | String  | `/`            | Default for `path` entries in [Ingress objects](https://kubernetes.io/docs/concepts/services-networking/ingress/) |
 | `pathType`                     | String  | `Prefix`       | A [Path Type](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types) allows you to specify how a path should be matched. Our current default is `Prefix` but you can use `ImplementationSpecific` or `Exact` depending on your use case. |
+| `provider`                     | String  | `nginx`       | Global setting that defines the Ingress provider to use. `nginx` is used as the default provider.  |
 
 ### Ingress Path
 
-This chart employs `global.ingress.path` as means to assist those users which need to alter the defintion of `path` entries for their Ingress objects.
-Many users will have no need for this setting, and _should not configure it_.
+This chart employs `global.ingress.path` as a means to assist those users that need to alter the definition of `path` entries for their Ingress objects.
+Many users have no need for this setting, and _should not configure it_.
 
 For those users who need to have their `path` definitions end in `/*` to match their load balancer / proxy behaviors, such as when using `ingress.class: gce` in GCP,
 `ingress.class: alb` in AWS, or another such provider.
 
-This setting will ensure that all `path` entries in Ingress resources throughout this chart will be rendered with this.
+This setting ensures that all `path` entries in Ingress resources throughout this chart are rendered with this.
 The only exception is when populating the [`gitlab/webservice` deployments settings](gitlab/webservice/index.md#deployments-settings), where `path` must be specified.
 
 ### Cloud provider LoadBalancers
@@ -193,6 +194,11 @@ global:
     applicationName:
     preparedStatements: false
     connectTimeout:
+    keepalives:
+    keepalivesIdle:
+    keepalivesInterval:
+    keepalivesCount:
+    tcpUserTimeout:
     password:
       useSecret: true
       secret: gitlab-postgres
@@ -213,6 +219,11 @@ global:
 | `username`           | String    | `gitlab`               | The username with which to authenticate to the database.                                                                                                                                       |
 | `preparedStatements` | Boolean      | `false`                | If prepared statements should be used when communicating with the PostgreSQL server.                                                                                                           |
 | `connectTimeout`     | Integer   |                        | The number of seconds to wait for a database connection.                                                                                                                                       |
+| `keepalives`         | Integer   |                        | Controls whether client-side TCP keepalives are used (1, meaning on, 0, meaning off).                                                                                                          |
+| `keepalivesIdle`     | Integer   |                        | The number of seconds of inactivity after which TCP should send a keepalive message to the server. A value of zero uses the system default.                                                    |
+| `keepalivesInterval` | Integer   |                        | The number of seconds after which a TCP keepalive message that is not acknowledged by the server should be retransmitted. A value of zero uses the system default.                             |
+| `keepalivesCount`    | Integer   |                        | The number of TCP keepalives that can be lost before the client's connection to the server is considered dead. A value of zero uses the system default.                                        |
+| `tcpUserTimeout`     | Integer   |                        | The number of milliseconds that transmitted data may remain unacknowledged before a connection is forcibly closed. A value of zero uses the system default.                                    |
 | `applicationName`    | String    |                        | The name of the application connecting to the database. Set to a blank string (`""`) to disable. By default, this will be set to the name of the running process (e.g. `sidekiq`, `puma`).     |
 
 ### PostgreSQL per chart
@@ -416,8 +427,8 @@ continue to apply with the Sentinel support unless re-specified in the table abo
 ### Multiple Redis support
 
 The GitLab chart includes support for running with separate Redis instances
-for different persistence classes, currently: `cache`, `queues`, `shared_state` and
-`actioncable`
+for different persistence classes, currently: `cache`, `queues`, `shared_state`,
+`actioncable` and `trace_chunks`.
 
 | Instance     | Purpose                                             |
 |:-------------|:----------------------------------------------------|
@@ -425,6 +436,7 @@ for different persistence classes, currently: `cache`, `queues`, `shared_state` 
 | `queues`       | Store Sidekiq background jobs                       |
 | `shared_state` | Store session-related and other persistent data     |
 | `actioncable`  | Pub/Sub queue backend for ActionCable               |
+| `trace_chunks`  | Store job traces temporarily                       |
 
 Any number of the instances may be specified. Any instances not specified
 will be handled by the primary Redis instance specified
@@ -470,6 +482,13 @@ global:
         enabled: true
         secret: cable-secret
         key: cable-password
+    trace_chunks:
+      host: trace_chunks.redis.example
+      port: 6379
+      password:
+        enabled: true
+        secret: trace_chunks-secret
+        key: trace_chunks-password
 ```
 
 The following table describes the attributes for each dictionary of the
@@ -1480,8 +1499,8 @@ global:
 
 GitLab supports routing a job from a worker to a desired queue before it is
 scheduled. Sidekiq clients match a job against a configured list of routing
-rules. Rules are evaluated from first to last, and as soon as we find a match
-for a given worker we stop processing for that worker (first match wins). If
+rules. Rules are evaluated from first to last, and as soon as a match for a
+given worker is found, the processing for that worker is stopped (first match wins). If
 the worker doesn't match any rule, it falls back the queue name generated from
 the worker name.
 
@@ -1489,18 +1508,17 @@ By default, the routing rules are not configured (or denoted with an empty
 array), all the jobs are routed to the queue generated from the worker name.
 
 The routing rules list is an ordered array of tuples of query and
-corresponding queue.
+corresponding queue:
 
-- The query is following
-[worker matching query](https://docs.gitlab.com/ee/administration/operations/extra_sidekiq_processes.html#queue-selector) syntax.
-
-- The queue_name must be a valid Sidekiq queue name. If the queue name
-is nil, or an empty string, the worker is routed to the queue generated
-by the name of the worker instead.
+- The query is following the
+  [worker matching query](https://docs.gitlab.com/ee/administration/operations/extra_sidekiq_processes.html#queue-selector) syntax.
+- The `<queue_name>` must be a valid Sidekiq queue name. If the queue name
+  is `nil`, or an empty string, the worker is routed to the queue generated
+  by the name of the worker instead.
 
 The query supports wildcard matching `*`, which matches all workers. As a
 result, the wildcard query must stay at the end of the list or the later rules
-are ignored.
+are ignored:
 
 ```yaml
 global:
@@ -1979,15 +1997,5 @@ More detailed examples can be found in the
 
 ## Platform
 
-Platform specific settings to enable features for certain operational
-environments.
-
-```yaml
-global:
-  platform:
-    eksRoleArn:
-```
-
-| Name           | Type   | Default | Description                                                                                            |
-| :---           | :--:   | :------ | :----------                                                                                            |
-| `eksRoleArn`   | String |         | Object storage IAM role. See [Using IAM roles for service accounts](../advanced/external-object-storage/aws-iam-roles.md#using-iam-roles-for-service-accounts) for more information.  |
+The `platform` key is reserved for specific features targeting a specific
+platform like GKE or EKS.

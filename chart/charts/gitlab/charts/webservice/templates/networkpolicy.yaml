@@ -6,15 +6,14 @@ metadata:
   name: {{ template "fullname" . }}-v1
   namespace: {{ $.Release.Namespace }}
   labels:
-    {{ include "gitlab.standardLabels" . | nindent 4 }}
-    {{ include "gitlab.commonLabels" . | nindent 4 }}
+    {{- include "gitlab.standardLabels" . | nindent 4 }}
+    {{- include "gitlab.commonLabels" . | nindent 4 }}
   annotations:
     {{ toYaml .Values.networkpolicy.annotations | nindent 4 }}
 spec:
   podSelector:
     matchLabels:
-      app: {{ template "name" . }}
-      release: {{ .Release.Name }}
+      {{- include "gitlab.selectorLabels" $ | nindent 6 }}
   policyTypes:
     {{- if .Values.networkpolicy.egress.enabled }}
     - Egress

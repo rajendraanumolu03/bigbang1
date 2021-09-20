@@ -40,7 +40,7 @@ global:
   edition: ee
 
   ## https://docs.gitlab.com/charts/charts/globals#gitlab-version
-  # gitlabVersion: master
+  # gitlabVersion:
 
   ## https://docs.gitlab.com/charts/charts/globals#application-resource
   application:
@@ -93,6 +93,11 @@ global:
   ## https://docs.gitlab.com/charts/charts/globals#configure-postgresql-settings
   psql:
     connectTimeout:
+    keepalives:
+    keepalivesIdle:
+    keepalivesInterval:
+    keepalivesCount:
+    tcpUserTimeout:
     password: {}
       # useSecret:
       # secret:
@@ -269,7 +274,7 @@ global:
       matomoSiteId:
       matomoDisableCookies:
 
-    ## https://docs.gitlab.com/charts/charts/globals#lfs-artifacts-uploads-packages-external-mr-diffs
+    ## https://docs.gitlab.com/charts/charts/globals#lfs-artifacts-uploads-packages-external-mr-diffs-and-dependency-proxy
     object_store:
       enabled: false
       proxy_download: true
@@ -332,8 +337,8 @@ global:
       bucket: gitlab-backups
       tmpBucket: tmp
 
-    ## https://docs.gitlab.com/charts/charts/globals#incoming-email-settings
-    ## https://docs.gitlab.com/charts/installation/deployment#incoming-email
+    ## https://docs.gitlab.com/charts/installation/command-line-options.html#incoming-email-configuration
+    ## https://docs.gitlab.com/charts/charts/gitlab/mailroom/index.html#incoming-email
     incomingEmail:
       enabled: false
       address: ""
@@ -355,8 +360,7 @@ global:
         key: secret
       pollInterval: 60
 
-    ## https://docs.gitlab.com/charts/charts/globals#service-desk-email-settings
-    ## https://docs.gitlab.com/charts/installation/deployment#service-desk-email
+    ## https://docs.gitlab.com/charts/charts/gitlab/mailroom/index.html#service-desk-email
     serviceDeskEmail:
       enabled: false
       address: ""
@@ -395,7 +399,7 @@ global:
       #     key: _the_key_which_holds_your_ldap_password
       #   encryption: 'plain'
 
-    ## https://docs.gitlab.com/charts/charts/globals#kas
+    ## https://docs.gitlab.com/charts/charts/globals#kas-settings
     gitlab_kas: {}
       # secret:
       # key:
@@ -471,14 +475,16 @@ global:
         # clientCertificate:
         # serverCA:
     registry:
-      syncEnabled: false
-      ## Consumes global.registry.notificationSecret
+      replication:
+        enabled: false
+        primaryApiUrl:
+        ## Consumes global.registry.notificationSecret
 
   ## https://docs.gitlab.com/charts/charts/gitlab/kas/
   kas:
     enabled: false
 
-  ## https://docs.gitlab.com/charts/charts/globals#configure-gitlab-shell-settings
+  ## https://docs.gitlab.com/charts/charts/globals#configure-gitlab-shell
   shell:
     authToken: {}
       # secret:
@@ -603,7 +609,7 @@ global:
 
   antiAffinity: soft
 
-  ## https://docs.gitlab.com/charts/charts/globals#workhorse
+  ## https://docs.gitlab.com/charts/charts/globals#configure-workhorse-settings
   ## Global settings related to Workhorse
   workhorse:
     serviceName: webservice-default
@@ -692,7 +698,7 @@ global:
     ## Name to be used for serviceAccount, otherwise defaults to chart fullname
     # name:
 
-  ## https://docs.gitlab.com/charts/charts/globals/tracing#tracing
+  ## https://docs.gitlab.com/charts/charts/globals/#tracing
   tracing:
     connection:
       string: ""
@@ -702,10 +708,6 @@ global:
   extraEnv: {}
    # SOME_KEY: some_value
    # SOME_OTHER_KEY: some_other_value
-
-  ## https://docs.gitlab.com/charts/charts/globals
-  platform:
-    eksRoleArn:
 
 ## End of global
 
@@ -738,8 +740,8 @@ upgradeCheck:
 ## Installation & configuration of jetstack/cert-manager
 ## See requirements.yaml for current version
 certmanager:
-  createCustomResource: false
-  nameOverride: cert-manager
+  installCRDs: false
+  nameOverride: certmanager
   # Install cert-manager chart. Set to false if you already have cert-manager
   # installed or if you are not using cert-manager.
   install: false
@@ -747,8 +749,6 @@ certmanager:
   # See https://github.com/jetstack/cert-manager/blob/master/deploy/charts/cert-manager/README#configuration
   rbac:
     create: true
-  webhook:
-    enabled: false
 
 ## https://docs.gitlab.com/charts/charts/nginx/
 ## https://docs.gitlab.com/charts/architecture/decisions#nginx-ingress
@@ -1070,7 +1070,7 @@ registry:
 
 ## Automatic shared secret generation
 ## https://docs.gitlab.com/charts/installation/secrets
-## https://docs.gitlab.com/charts/charts/shared-secrets
+## https://docs.gitlab.com/charts/charts/shared-secrets.html
 shared-secrets:
   enabled: true
   rbac:
@@ -1083,11 +1083,12 @@ shared-secrets:
       - name: private-registry
     keyAlgorithm: "rsa"
     keySize: "4096"
-    expiry: "365d"
+    expiry: "3650d"
     caSubject: "GitLab Helm Chart"
     pullSecrets: []
   env: production
   serviceAccount:
+    enabled: true
     create: true
     name: # Specify a pre-existing ServiceAccount name
   resources:
@@ -1138,6 +1139,7 @@ gitlab-runner:
 grafana:
   ## Override and provide "bogus" administation secrets
   ## gitlab/gitlab-grafana provides overrides via shared-secrets
+  nameOverride: grafana-app
   admin:
     existingSecret: bogus
   env:
@@ -1161,6 +1163,8 @@ grafana:
     server:
       serve_from_sub_path: true
       root_url: http://localhost/-/grafana/
+    auth:
+      login_cookie_name: gitlab_grafana_session
   ## We generate and provide random passwords
   ## NOTE: the Secret & ConfigMap names are hard coded!
   extraSecretMounts:
