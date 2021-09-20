@@ -1023,7 +1023,7 @@ postgresql:
     ## could not get IronBank hardened image to work with the bitnami postgres sub-chart
     registry: registry.dso.mil
     repository: platform-one/big-bang/apps/developer-tools/gitlab/postgresql
-    tag: 11.9.0
+    tag: 12.7.0
   usePasswordFile: true
   existingSecret: 'bogus'
   initdbScriptsConfigMap: 'bogus'
