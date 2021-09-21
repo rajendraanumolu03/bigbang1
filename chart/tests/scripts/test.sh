@@ -22,7 +22,7 @@ git add Dockerfile
 git commit -m 'initial commit'
 git remote rm origin
 git remote add origin ${GITLAB_ORIGIN}/${GITLAB_USER}/${GITLAB_PROJECT}.git
-git push -u origin master
+git push -u origin main
 
 echo "pulling image..."
 crane pull alpine:latest alpine-latest.tar
