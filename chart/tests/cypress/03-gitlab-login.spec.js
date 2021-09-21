@@ -12,8 +12,12 @@ describe('Gitlab Login', () => {
     // cy.get('li.home a[href="/admin"]').first().click()
     // cy.get('a[title="Users"]').click()
     cy.get('a[data-qa-selector="pending_approval_tab"]').click()
-    // cy.get('button[id="__BVID__32__BV_toggle_"]').click()
+    // version 14.1.x 
+    cy.get('button[id="__BVID__32__BV_toggle_"]').click()
     cy.get('button[data-path="/admin/users/'+Cypress.env('gitlab_username')+'/approve"]').click()
+    cy.get('button[data-qa-selector="approve_user_confirm_button"]').click()
+    // version 13.12.9
+    // cy.get('button[id="__BVID__30__BV_toggle_"]').click()
     // cy.get('a[href="/admin/users/'+Cypress.env('gitlab_username')+'/approve"]').click()
   })
 })
