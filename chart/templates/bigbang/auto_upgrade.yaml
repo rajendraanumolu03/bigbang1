@@ -57,7 +57,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": post-upgrade
-    "helm.sh/hook-weight": "21"
+    "helm.sh/hook-weight": "-21"
     "helm.sh/hook-delete-policy": hook-succeeded,hook-failed,before-hook-creation
 roleRef:
   apiGroup: rbac.authorization.k8s.io
