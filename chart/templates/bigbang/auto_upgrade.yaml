@@ -104,6 +104,7 @@ spec:
         app: {{ template "name" . }}
         release: {{ .Release.Name }}
     spec:
+      serviceAccountName: {{ template "fullname" . }}-auto-upgrade
       {{- if .Values.upgradeCheck.nodeSelector }}
         nodeSelector: {{ toYaml .Values.upgradeCheck.nodeSelector | nindent 8 }}
       {{- else }}
