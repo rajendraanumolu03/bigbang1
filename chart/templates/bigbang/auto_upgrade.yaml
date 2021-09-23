@@ -42,8 +42,8 @@ metadata:
   name: {{ template "fullname" . }}-auto-upgrade
   namespace: {{ .Release.Namespace }}
   annotations:
-    "helm.sh/hook": post-upgrade
-    "helm.sh/hook-weight": "-21"
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "-22"
     "helm.sh/hook-delete-policy": hook-succeeded,hook-failed,before-hook-creation
 rules:
 - apiGroups: ["helm.toolkit.fluxcd.io"]
@@ -56,7 +56,7 @@ metadata:
   name: {{ template "fullname" . }}-auto-upgrade
   namespace: {{ .Release.Namespace }}
   annotations:
-    "helm.sh/hook": post-upgrade
+    "helm.sh/hook": pre-upgrade
     "helm.sh/hook-weight": "-21"
     "helm.sh/hook-delete-policy": hook-succeeded,hook-failed,before-hook-creation
 roleRef:
