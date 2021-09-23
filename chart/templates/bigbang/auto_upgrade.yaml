@@ -1,4 +1,73 @@
 {{- if .Values.upgradeCheck.enabled }}
+{{- if .Values.networkPolicies.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: egress-auto-upgrade-job
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "-21"
+    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed,before-hook-creation
+spec:
+  egress:
+  - to:
+    - ipBlock:
+        cidr: {{ .Values.networkPolicies.controlPlaneCidr }}
+        {{- if eq .Values.networkPolicies.controlPlaneCidr "0.0.0.0/0" }}
+        # ONLY Block requests to AWS metadata IP
+        except:
+        - 169.254.169.254/32
+        {{- end }}
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: {{ template "fullname" . }}-auto-upgrade
+  policyTypes:
+  - Egress
+{{- end }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ template "fullname" . }}-auto-upgrade
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "-21"
+    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed,before-hook-creation
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ template "fullname" . }}-auto-upgrade
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": post-upgrade
+    "helm.sh/hook-weight": "-21"
+    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed,before-hook-creation
+rules:
+- apiGroups: ["helm.toolkit.fluxcd.io"]
+  resources: ["helmreleases"]
+  verbs: ["get", "list", "patch", "update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ template "fullname" . }}-auto-upgrade
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": post-upgrade
+    "helm.sh/hook-weight": "21"
+    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed,before-hook-creation
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ template "fullname" . }}-auto-upgrade
+subjects:
+- kind: ServiceAccount
+  name: {{ template "fullname" . }}-auto-upgrade
+  namespace: {{ .Release.Namespace }}
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
