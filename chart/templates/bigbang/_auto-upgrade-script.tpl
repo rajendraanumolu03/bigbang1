@@ -68,7 +68,7 @@ echo "old chart version " $OLD_CHART_VERSION_STRING
 echo "new gitlab version: " $GITLAB_VERSION
 echo "new chart version: " $CHART_VERSION
 
-kubectl get pods -A
+kubectl get pods -n gitlab
 
 # # Checking Version
 # # (i) if it is a major version jump
