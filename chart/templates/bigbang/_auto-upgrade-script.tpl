@@ -68,6 +68,7 @@ echo "old chart version " $OLD_CHART_VERSION_STRING
 echo "new gitlab version: " $GITLAB_VERSION
 echo "new chart version: " $CHART_VERSION
 
+kubectl get nodes
 
 # # Checking Version
 # # (i) if it is a major version jump
