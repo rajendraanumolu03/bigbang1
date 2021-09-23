@@ -51,7 +51,7 @@ spec:
       {{- include "pullsecrets" .Values.upgradeCheck.image | nindent 6}}
       containers:
         - name: auto-upgrade-check
-          image: {{ include "gitlab.busybox.image" (dict "local" .Values.upgradeCheck "global" $.Values.global.busybox) | quote }}
+          image: {{ include "gitlab.kubectl.image" . | quote }}
           command: ['/bin/sh', '/scripts/runcheck']
           {{ template "gitlab.imagePullPolicy" . }}
           env:
