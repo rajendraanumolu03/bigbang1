@@ -67,9 +67,12 @@ echo "old gitlab version " $OLD_VERSION_STRING
 echo "old chart version " $OLD_CHART_VERSION_STRING
 echo "new gitlab version: " $GITLAB_VERSION
 echo "new chart version: " $CHART_VERSION
-
 echo
-kubectl get helmreleases -n bigbang
+
+if [ ${OLD_VERSION_STRING}="13.12.9" ] && [ GITLAB_VERSION="14.1.0" ]; then
+    kubectl patch gitrepository gitlab -n bigbang --type=merge -p '{"spec":{"ref":{"branch":"102-gitlab-upgrade-to-14-1-0"}}}'
+fi
+
 
 # # Checking Version
 # # (i) if it is a major version jump

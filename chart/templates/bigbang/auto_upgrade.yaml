@@ -47,10 +47,10 @@ metadata:
 rules:
 - apiGroups: ["helm.toolkit.fluxcd.io"]
   resources: ["helmreleases"]
-  verbs: ["*"]
+  verbs: ["get", "list", "patch", "update"]
 - apiGroups: ["source.toolkit.fluxcd.io"]
   resources: ["gitrepositories"]
-  verbs: ["*"]
+  verbs: ["get", "list", "patch", "update"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
