@@ -70,7 +70,10 @@ echo "new chart version: " $CHART_VERSION
 echo
 
 if [ ${OLD_VERSION_STRING}="13.12.9" ] && [ GITLAB_VERSION="14.1.0" ]; then
-    kubectl patch gitrepository gitlab -n bigbang --type=merge -p '{"spec":{"ref":{"branch":"102-gitlab-upgrade-to-14-1-0"}}}'
+  echo  "Auto upgrade to 14.0.5 will be attempted"
+  kubectl patch gitrepository gitlab -n bigbang --type=merge -p '{"spec":{"ref":{"branch":"102-gitlab-upgrade-to-14-1-0"}}}'
+else
+  echo "No auto upgrade"
 fi
 
 
