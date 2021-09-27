@@ -84,7 +84,7 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 data:
   runcheck: |
-    {{- include (print $.Template.BasePath "/bigbang/_auto-post-upgrade-script.tpl") . | nindent 4 }}
+    {{- include (print $.Template.BasePath "/bigbang/auto-upgrade/_auto-post-upgrade-script.tpl") . | nindent 4 }}
 ---
 apiVersion: batch/v1
 kind: Job
