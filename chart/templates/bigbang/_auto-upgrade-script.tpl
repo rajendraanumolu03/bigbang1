@@ -72,6 +72,25 @@ echo
 if [[ ${OLD_VERSION_STRING} == "13.12.9" && ${GITLAB_VERSION} == "14.1.0" ]]; then
   echo  "Auto upgrade to 14.0.5 will be attempted"
   kubectl patch gitrepository gitlab -n bigbang --type=merge -p '{"spec":{"ref":{"branch":"102-gitlab-upgrade-to-14-1-0"}}}'
+
+  # wait for helmrelease lastAppliedRevision to be 5.0.5
+  while true; do
+    version=$(kubectl get helmrelease gitlab -n bigbang -o jsonpath='{.status.lastAppliedRevision}')
+    echo "lastAppliedRevision : ${version}"
+    if [[ ${version} == "5.0.5-bb.0" ]]; then
+      echo "auto upgrade to chart version 5.0.5-bb.0 completed"
+      break
+    fi
+
+    echo "waiting for last lastAppliedRevision to be: 5.0.5-bb.0..."
+    sleep 10
+
+  done
+
+  # then patch gitrepository ref to new 5.1.0
+  echo  "Auto upgrade to 14.1.0 will be attempted"
+  kubectl patch gitrepository gitlab -n bigbang --type=merge -p '{"spec":{"ref":{"branch":"gitlab-test-auto-upgrade"}}}'
+
 else
   echo "No auto upgrade"
 fi
