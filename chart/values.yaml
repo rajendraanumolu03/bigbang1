@@ -494,6 +494,8 @@ global:
   ## https://docs.gitlab.com/charts/charts/gitlab/kas/
   kas:
     enabled: false
+    service:
+      apiExternalPort: 8153 # port for connections from the GitLab backend
 
   ## https://docs.gitlab.com/charts/charts/globals#configure-gitlab-shell
   shell:
@@ -643,7 +645,7 @@ global:
   certificates:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/alpine-certificates
-      tag: 14.3.1
+      tag: 14.4.1
       pullSecrets:
       - name: private-registry
     customCAs:
@@ -687,7 +689,7 @@ global:
   kubectl:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/kubectl
-      tag: 14.3.1
+      tag: 14.4.1
       pullSecrets:
       - name: private-registry
     securityContext:
@@ -1076,7 +1078,7 @@ registry:
       memory: 1024Mi
   image:
     repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-container-registry
-    tag: 14.3.1
+    tag: 14.4.1
     pullSecrets:
     - name: private-registry
   ingress:
@@ -1206,7 +1208,7 @@ gitlab:
         app: 'gitaly'
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-toolbox
-      tag: 14.3.1
+      tag: 14.4.1
       pullSecrets:
       - name: private-registry
     init:
@@ -1253,7 +1255,7 @@ gitlab:
         memory: 200Mi
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-exporter
-      tag: 14.3.1
+      tag: 14.4.1
       pullSecrets:
       - name: private-registry
     metrics:
@@ -1278,7 +1280,7 @@ gitlab:
         memory: 1G
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-toolbox
-      tag: 14.3.1
+      tag: 14.4.1
       pullSecrets:
       - name: private-registry
 ## https://docs.gitlab.com/charts/charts/gitlab/webservice
@@ -1302,7 +1304,7 @@ gitlab:
         memory: 2.5G # = 2 * 1.25G assuming there are 2 workerProcesses configured
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-webservice
-      tag: 14.3.1
+      tag: 14.4.1
       pullSecrets:
       - name: private-registry
     workhorse:
@@ -1314,8 +1316,9 @@ gitlab:
         requests:
           cpu: 600m
           memory: 2.5G
-      image: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-workhorse
-      tag: 14.3.1
+      # TESTING ONLY
+      image: registry.gitlab.com/gitlab-org/build/cng/gitlab-workhorse-ee
+      tag: v14.4.1
       pullSecrets:
       - name: private-registry
     ingress:
@@ -1324,7 +1327,7 @@ gitlab:
   sidekiq:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-sidekiq
-      tag: 14.3.1
+      tag: 14.4.1
       pullSecrets:
       - name: private-registry
     init:
@@ -1347,7 +1350,7 @@ gitlab:
   gitaly:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitaly
-      tag: 14.3.1
+      tag: 14.4.1
       pullSecrets:
       - name: private-registry
     init:
@@ -1369,7 +1372,7 @@ gitlab:
   gitlab-shell:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-shell
-      tag: 14.3.1
+      tag: 14.4.1
       pullSecrets:
       - name: private-registry
     init:
@@ -1392,7 +1395,7 @@ gitlab:
   praefect:
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitaly
-      tag: 14.3.1
+      tag: 14.4.1
     init:
       resources:
         limits:
