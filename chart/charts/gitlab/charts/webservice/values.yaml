@@ -172,7 +172,8 @@ psql: {}
 global:
   ingress:
     enabled:
-    annotations: {}
+    annotations: 
+      bigbang.dev/istioVersion: 1.10.3
     tls: {}
       # secretName:
       # enabled: true
