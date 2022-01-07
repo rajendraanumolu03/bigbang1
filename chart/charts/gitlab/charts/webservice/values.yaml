@@ -172,8 +172,7 @@ psql: {}
 global:
   ingress:
     enabled:
-    annotations: 
-      bigbang.dev/istioVersion: 1.10.3
+    annotations: {}
     tls: {}
       # secretName:
       # enabled: true
@@ -389,7 +388,8 @@ priorityClassName: ""
 #  end of each resource `.metadata.name`, and added as a label to each
 #  resource for tracking.
 #  https://docs.gitlab.com/charts/charts/gitlab/webservice/#deployments
-deployments: {}
+deployments: 
+  bigbang.dev/istioVersion: 1.10.3
   # There must always be at least one, with `xyz.ingress.path: /`
   # unless `ingress.requireBasePath: false`
   #
