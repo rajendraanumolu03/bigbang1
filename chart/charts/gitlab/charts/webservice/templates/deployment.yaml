@@ -51,7 +51,6 @@ spec:
         {{- include "webservice.commonLabels" . | nindent 8 }}
         {{- include "webservice.podLabels" . | nindent 8 }}
       annotations:
-        bigbang.dev/istioVersion: 1.10.3
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yml") $ | sha256sum }}
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
       {{- range $key, $value := .pod.annotations }}

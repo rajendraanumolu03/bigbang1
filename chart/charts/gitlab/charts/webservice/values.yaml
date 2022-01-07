@@ -58,6 +58,7 @@ sshHostKeys:
 metrics:
   enabled: true
   annotations:
+    bigbang.dev/istioVersion: 1.10.3
     gitlab.com/prometheus_scrape: "true"
     gitlab.com/prometheus_port: "8080"
     gitlab.com/prometheus_path: "/-/metrics"
@@ -389,8 +390,6 @@ priorityClassName: ""
 #  resource for tracking.
 #  https://docs.gitlab.com/charts/charts/gitlab/webservice/#deployments
 deployments: 
-  # annotations:
-  #   bigbang.dev/istioVersion: 1.10.3
   # There must always be at least one, with `xyz.ingress.path: /`
   # unless `ingress.requireBasePath: false`
   #
