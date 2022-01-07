@@ -619,7 +619,8 @@ global:
 
   ## Global Deployment Annotations
   deployment:
-    annotations: {}
+    annotations:
+      bigbang.dev/istioVersion: "1.11.3-bb.0"
 
   antiAffinity: soft
 
