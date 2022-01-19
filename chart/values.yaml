@@ -27,8 +27,8 @@ global:
 
   # added by BigBang to help with sub-chart configuration
   istio:
-    enabled: false
-    injection: disabled
+    enabled: true
+    injection: enabled
     
   common:
     labels: {}
@@ -746,10 +746,10 @@ upgradeCheck:
   tolerations: []
   resources:
     requests:
-      cpu: 500m
+      cpu: "1"
       memory: 500Mi
     limits:
-      cpu: 500m
+      cpu: "1"
       memory: 500Mi
 
 ## Settings to for the Let's Encrypt ACME Issuer
@@ -796,7 +796,7 @@ nginx-ingress:
       name: "{{ .Release.Name }}-nginx"
     resources:
       requests:
-        cpu: 100m
+        cpu: "1"
         memory: 100Mi
     publishService:
       enabled: true
@@ -820,7 +820,7 @@ nginx-ingress:
     replicaCount: 1
     resources:
       requests:
-        cpu: 5m
+        cpu: "1"
         memory: 5Mi
   rbac:
     create: true
@@ -978,10 +978,10 @@ redis:
       - private-registry
     resources:
       limits: 
-        cpu: 250m
+        cpu: "1"
         memory: 256Mi
       requests: 
-        cpu: 250m
+        cpu: "1"
         memory: 256Mi
   image:
     registry: registry1.dso.mil/ironbank/opensource
@@ -993,43 +993,43 @@ redis:
     command: "redis-server"
     resources: 
       limits: 
-        cpu: 250m
+        cpu: "1"
         memory: 256Mi
       requests: 
-        cpu: 250m
+        cpu: "1"
         memory: 256Mi
   slave:
     command: "redis-server"
     resources: 
       limits: 
-        cpu: 250m
+        cpu: "1"
         memory: 256Mi
       requests: 
-        cpu: 250m
+        cpu: "1"
         memory: 256Mi
   sentinel:
     resources: 
       limits: 
-        cpu: 250m
+        cpu: "1"
         memory: 256Mi
       requests: 
-        cpu: 250m
+        cpu: "1"
         memory: 256Mi
   volumePermissions:
     resources: 
       limits: 
-        cpu: 250m
+        cpu: "1"
         memory: 256Mi
       requests: 
-        cpu: 250m
+        cpu: "1"
         memory: 256Mi
   sysctlImage:
     resources: 
       limits: 
-        cpu: 250m
+        cpu: "1"
         memory: 256Mi
       requests: 
-        cpu: 250m
+        cpu: "1"
         memory: 256Mi
 
 ## Installation & configuration of stable/prostgresql
@@ -1042,10 +1042,10 @@ postgresql:
   postgresqlDatabase: gitlabhq_production
   resources:
     limits:
-      cpu: 500m
+      cpu: "1"
       memory: 500Mi
     requests:
-      cpu: 500m
+      cpu: "1"
       memory: 500Mi
   image:
     ## could not get IronBank hardened image to work with the bitnami postgres sub-chart
@@ -1075,17 +1075,17 @@ registry:
   init:
     resources:
       limits:
-        cpu: 200m
+        cpu: "1"
         memory: 200Mi
       requests:
-        cpu: 200m
+        cpu: "1"
         memory: 200Mi
   resources:
     limits:
-      cpu: 200m
+      cpu: "1"
       memory: 1024Mi
     requests:
-      cpu: 200m
+      cpu: "1"
       memory: 1024Mi
   image:
     repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-container-registry
@@ -1120,10 +1120,10 @@ shared-secrets:
     name: # Specify a pre-existing ServiceAccount name
   resources:
     requests:
-      cpu: 300m
+      cpu: "1"
       memory: 200Mi
     limits:
-      cpu: 300m
+      cpu: "1"
       memory: 200Mi
   securityContext:
     # in debian/alpine based images, this is `nobody:nogroup`
@@ -1225,10 +1225,10 @@ gitlab:
     init:
       resources:
         requests:
-          cpu: 200m
+          cpu: "1"
           memory: 200Mi
         limits:
-          cpu: 200m
+          cpu: "1"
           memory: 200Mi
     resources:
       requests:
@@ -1239,12 +1239,14 @@ gitlab:
         memory: 3.5Gi
     backups:
       cron:
+        enabled: true
+        schedule: "*/5 * * * *"
         resources:
           requests:
-            cpu: 350m
+            cpu: "1"
             memory: 350Mi
           limits:
-            cpu: 350m
+            cpu: "1"
             memory: 350Mi
 
   gitlab-exporter:
@@ -1252,17 +1254,17 @@ gitlab:
     init:
       resources:
         limits:
-          cpu: 200m
+          cpu: "1"
           memory: 200Mi
         requests:
-          cpu: 200m
+          cpu: "1"
           memory: 200Mi
     resources:
       limits:
-        cpu: 150m
+        cpu: "1"
         memory: 200Mi
       requests:
-        cpu: 150m
+        cpu: "1"
         memory: 200Mi
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-exporter
@@ -1277,17 +1279,17 @@ gitlab:
     init:
       resources:
         limits:
-          cpu: 200m
+          cpu: "1"
           memory: 200Mi
         requests:
-          cpu: 200m
+          cpu: "1"
           memory: 200Mi
     resources:
       limits:
-        cpu: 500m
+        cpu: "1"
         memory: 1G
       requests:
-        cpu: 500m
+        cpu: "1"
         memory: 1G
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-toolbox
@@ -1300,18 +1302,18 @@ gitlab:
       resources:
         # https://docs.gitlab.com/charts/charts/gitlab/webservice/index.html#memory-requestslimits
         limits:
-          cpu: 200m
+          cpu: "1"
           memory: 200Mi
         requests:
-          cpu: 200m
+          cpu: "1"
           memory: 200Mi
     resources:
       # https://docs.gitlab.com/charts/charts/gitlab/webservice/index.html#memory-requestslimits
       limits:
-        cpu: 600m # double the default
+        cpu: "1" # double the default
         memory: 2.5G # = 2 * 1.25G assuming there are 2 workerProcesses configured
       requests:
-        cpu: 600m # double the default
+        cpu: "1" # double the default
         memory: 2.5G # = 2 * 1.25G assuming there are 2 workerProcesses configured
     image:
       repository: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-webservice
@@ -1322,10 +1324,10 @@ gitlab:
       resources:
         # https://docs.gitlab.com/charts/charts/gitlab/webservice/index.html#memory-requestslimits
         limits:
-          cpu: 600m
+          cpu: "1"
           memory: 2.5G
         requests:
-          cpu: 600m
+          cpu: "1"
           memory: 2.5G
       image: registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-workhorse
       tag: 14.6.2
@@ -1343,18 +1345,18 @@ gitlab:
     init:
       resources:
         limits:
-          cpu: 200m
+          cpu: "1"
           memory: 200Mi
         requests:
-          cpu: 200m
+          cpu: "1"
           memory: 200Mi
     resources:
       requests:
         memory: 3G
-        cpu: 1500m
+        cpu: "1"
       limits:
         memory: 3G
-        cpu: 1500m
+        cpu: "1"
 
 ## https://docs.gitlab.com/charts/charts/gitlab/gitaly
   gitaly:
@@ -1366,17 +1368,17 @@ gitlab:
     init:
       resources:
         limits:
-          cpu: 200m
+          cpu: "1"
           memory: 200Mi
         requests:
-          cpu: 200m
+          cpu: "1"
           memory: 200Mi
     resources:
       requests:
-        cpu: 400m
+        cpu: "1"
         memory: 600Mi
       limits:
-        cpu: 400m
+        cpu: "1"
         memory: 600Mi
 ## https://docs.gitlab.com/charts/charts/gitlab/gitlab-shell
   gitlab-shell:
@@ -1388,17 +1390,17 @@ gitlab:
     init:
       resources:
         limits:
-          cpu: 200m
+          cpu: "1"
           memory: 200Mi
         requests:
-          cpu: 200m
+          cpu: "1"
           memory: 200Mi
     resources:
       limits:
-        cpu: 300m
+        cpu: "1"
         memory: 300Mi
       requests:
-        cpu: 300m
+        cpu: "1"
         memory: 300Mi
 
 ## doc/charts/gitlab/praefect  # added by BigBang
@@ -1409,10 +1411,10 @@ gitlab:
     init:
       resources:
         limits:
-          cpu: 200m
+          cpu: "1"
           memory: 200Mi
         requests:
-          cpu: 200m
+          cpu: "1"
           memory: 200Mi
     resources:
       requests:
@@ -1431,17 +1433,17 @@ minio:
   init:
     resources:
       limits:
-        cpu: 200m
+        cpu: "1"
         memory: 200Mi
       requests:
-        cpu: 200m
+        cpu: "1"
         memory: 200Mi
   resources:
     limits:
-      cpu: 200m
+      cpu: "1"
       memory: 300Mi
     requests:
-      cpu: 200m
+      cpu: "1"
       memory: 300Mi
   # use Ironbank hardened images for MinIO
   image: registry1.dso.mil/ironbank/opensource/minio/minio

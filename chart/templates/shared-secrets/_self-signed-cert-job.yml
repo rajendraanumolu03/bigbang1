@@ -76,6 +76,8 @@ spec:
         - -exc
         - |
           certname={{ template "gitlab.wildcard-self-signed-cert-name" . }}
+          echo "Waiting for KUBE API"
+          curl -s --connect-timeout 1 --retry 30 --retry-delay 1 --retry-connrefused --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT > /dev/null
           # create wildcard certificate secret
           kubectl create secret tls $certname \
             --cert=/output/wildcard.pem --key=/output/wildcard-key.pem || true

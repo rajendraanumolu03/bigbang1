@@ -65,6 +65,9 @@ function generate_secret_if_needed(){
   label_secret $secret_name
 }
 
+echo "Waiting for KUBE API" 
+curl -s --connect-timeout 1 --retry 30 --retry-delay 1 --retry-connrefused --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT > /dev/null
+
 # Initial root password
 generate_secret_if_needed {{ template "gitlab.migrations.initialRootPassword.secret" . }} --from-literal={{ template "gitlab.migrations.initialRootPassword.key" . }}=$(gen_random 'a-zA-Z0-9' 64)
 
