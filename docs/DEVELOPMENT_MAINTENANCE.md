@@ -270,12 +270,10 @@ This is a high-level list of modifitations that Big Bang has made to the upstrea
     ```
 
 ## chart/charts/postgresql/statefulset.yaml
-- Modify the `postgresql-extended-config` volumeMount to set mountPath to `/var/lib/postgresql/pgdata/data/conf.d/`
-- Modify the `postgresql-config` volumeMount to set mountPath to `/var/lib/postgresql/pgdata/data`
+- Set ENV `POSTGRESQL_VOLUME_DIR` equal to `"/bitnami/postgresql"`
 
 ## chart/charts/postgresql/statefulset-slaves.yaml
-- Modify the `postgresql-extended-config` volumeMount to set mountPath to `/var/lib/postgresql/pgdata/data/conf.d/`
-- Modify the `postgresql-config` volumeMount to set mountPath to `/var/lib/postgresql/pgdata/data`
+- Set ENV `POSTGRESQL_VOLUME_DIR` equal to `"/bitnami/postgresql"`
 
 ## chart/templates/upgrade_check_hook.yaml
 - exclude upgrade check job from istio sidecar injection. Lines 38-41

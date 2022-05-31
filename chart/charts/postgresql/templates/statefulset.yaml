@@ -136,7 +136,7 @@ spec:
             - name: POSTGRESQL_PORT_NUMBER
               value: "{{ template "postgresql.port" . }}"
             - name: POSTGRESQL_VOLUME_DIR
-              value: "{{ .Values.persistence.mountPath }}"
+              value: "/bitnami/postgresql"
             {{- if .Values.postgresqlInitdbArgs }}
             - name: POSTGRES_INITDB_ARGS
               value: {{ .Values.postgresqlInitdbArgs | quote }}
@@ -297,7 +297,7 @@ spec:
             {{- end }}
             {{- if or (.Files.Glob "files/conf.d/*.conf") .Values.postgresqlExtendedConf .Values.extendedConfConfigMap }}
             - name: postgresql-extended-config
-              mountPath: /var/lib/postgresql/pgdata/data/conf.d/
+              mountPath: /bitnami/postgresql/conf/conf.d/
             {{- end }}
             {{- if .Values.usePasswordFile }}
             - name: postgresql-password
@@ -314,7 +314,7 @@ spec:
             {{- end }}
             {{- if or (.Files.Glob "files/postgresql.conf") (.Files.Glob "files/pg_hba.conf") .Values.postgresqlConfiguration .Values.pgHbaConfiguration .Values.configurationConfigMap }}
             - name: postgresql-config
-              mountPath: /var/lib/postgresql/pgdata/data
+              mountPath: /bitnami/postgresql/conf
             {{- end }}
             {{- if .Values.master.extraVolumeMounts }}
             {{- toYaml .Values.master.extraVolumeMounts | nindent 12 }}
