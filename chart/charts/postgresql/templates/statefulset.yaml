@@ -123,6 +123,7 @@ spec:
         - name: {{ template "postgresql.fullname" . }}
           image: {{ template "postgresql.image" . }}
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          args: {{ .Values.args }}
           {{- if .Values.resources }}
           resources: {{- toYaml .Values.resources | nindent 12 }}
           {{- end }}
@@ -136,7 +137,7 @@ spec:
             - name: POSTGRESQL_PORT_NUMBER
               value: "{{ template "postgresql.port" . }}"
             - name: POSTGRESQL_VOLUME_DIR
-              value: "/bitnami/postgresql"
+              value: "{{ .Values.persistence.mountPath }}"
             {{- if .Values.postgresqlInitdbArgs }}
             - name: POSTGRES_INITDB_ARGS
               value: {{ .Values.postgresqlInitdbArgs | quote }}

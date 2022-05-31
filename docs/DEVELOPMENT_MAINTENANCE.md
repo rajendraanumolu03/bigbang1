@@ -270,10 +270,14 @@ This is a high-level list of modifitations that Big Bang has made to the upstrea
     ```
 
 ## chart/charts/postgresql/statefulset.yaml
-- Set ENV `POSTGRESQL_VOLUME_DIR` equal to `"/bitnami/postgresql"`
+- Add `args` to the postgres container
 
 ## chart/charts/postgresql/statefulset-slaves.yaml
-- Set ENV `POSTGRESQL_VOLUME_DIR` equal to `"/bitnami/postgresql"`
+- Add `args` to the postgres container
+
+## chart/charts/postgresql/values.yaml
+- Added value `args: ['--config_file="/bitnami/postgresql/conf/postgresql.conf"', '--hba_file="/bitnami/postgresql/conf/pg_hba.conf"']`
+
 
 ## chart/templates/upgrade_check_hook.yaml
 - exclude upgrade check job from istio sidecar injection. Lines 38-41
