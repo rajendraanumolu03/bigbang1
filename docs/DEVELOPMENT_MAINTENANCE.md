@@ -205,7 +205,7 @@ This is a high-level list of modifitations that Big Bang has made to the upstrea
 
 ##  chart/charts/*.tgz
 - run ```helm dependency update ./chart``` and commit the downloaded archives
-
+- extract the postgresql archive (ex: `chart/charts/postgresql-8.9.4.tgz`) into its own folder in the charts directory (`chart/charts/postgresql`)
 - commit the tar archives that were downloaded from the helm dependency update command. And also commit the requirements.lock that was generated.
 
 ## chart/.gitignore
@@ -243,6 +243,15 @@ This is a high-level list of modifitations that Big Bang has made to the upstrea
       readOnly: true
     ```
 
+## chart/requirements.yaml
+- add the latest gluon subchart
+  ```yaml
+  - name: gluon
+    version: "0.2.9"
+    repository: "oci://registry.dso.mil/platform-one/big-bang/apps/library-charts/gluon"
+  ```
+- modify postgresql subchart to remove `repository: https://charts.bitnami.com/bitnami`, this ensures our local unpacked subchart is used
+
 ## chart/charts/minio/templates/_helper_create_buckets.sh
 - hack the MinIO sub-chart to work with newer mc version in IronBank image   
     line 65  
@@ -259,6 +268,14 @@ This is a high-level list of modifitations that Big Bang has made to the upstrea
       sidecar.istio.io/inject: "false"
     {{- end }}
     ```
+
+## chart/charts/postgresql/statefulset.yaml
+- Modify the `postgresql-extended-config` volumeMount to set mountPath to `/var/lib/postgresql/data/conf/conf.d/`
+- Modify the `postgresql-config` volumeMount to set mountPath to `/var/lib/postgresql/data/conf`
+
+## chart/charts/postgresql/statefulset-slaves.yaml
+- Modify the `postgresql-extended-config` volumeMount to set mountPath to `/var/lib/postgresql/data/conf/conf.d/`
+- Modify the `postgresql-config` volumeMount to set mountPath to `/var/lib/postgresql/data/conf`
 
 ## chart/templates/upgrade_check_hook.yaml
 - exclude upgrade check job from istio sidecar injection. Lines 38-41
