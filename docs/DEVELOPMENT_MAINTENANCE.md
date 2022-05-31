@@ -270,12 +270,12 @@ This is a high-level list of modifitations that Big Bang has made to the upstrea
     ```
 
 ## chart/charts/postgresql/statefulset.yaml
-- Modify the `postgresql-extended-config` volumeMount to set mountPath to `/var/lib/postgresql/data/conf/conf.d/`
-- Modify the `postgresql-config` volumeMount to set mountPath to `/var/lib/postgresql/data/conf`
+- Modify the `postgresql-extended-config` volumeMount to set mountPath to `/var/lib/postgresql/data/conf.d/`
+- Modify the `postgresql-config` volumeMount to set mountPath to `/var/lib/postgresql/data`
 
 ## chart/charts/postgresql/statefulset-slaves.yaml
-- Modify the `postgresql-extended-config` volumeMount to set mountPath to `/var/lib/postgresql/data/conf/conf.d/`
-- Modify the `postgresql-config` volumeMount to set mountPath to `/var/lib/postgresql/data/conf`
+- Modify the `postgresql-extended-config` volumeMount to set mountPath to `/var/lib/postgresql/data/conf.d/`
+- Modify the `postgresql-config` volumeMount to set mountPath to `/var/lib/postgresql/data`
 
 ## chart/templates/upgrade_check_hook.yaml
 - exclude upgrade check job from istio sidecar injection. Lines 38-41
