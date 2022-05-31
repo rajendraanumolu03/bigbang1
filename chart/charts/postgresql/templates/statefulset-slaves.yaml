@@ -233,11 +233,11 @@ spec:
             {{ end }}
             {{- if or (.Files.Glob "files/conf.d/*.conf") .Values.postgresqlExtendedConf .Values.extendedConfConfigMap }}
             - name: postgresql-extended-config
-              mountPath: /var/lib/postgresql/data/conf.d/
+              mountPath: /var/lib/postgresql/pgdata/data/conf.d/
             {{- end }}
             {{- if or (.Files.Glob "files/postgresql.conf") (.Files.Glob "files/pg_hba.conf") .Values.postgresqlConfiguration .Values.pgHbaConfiguration .Values.configurationConfigMap }}
             - name: postgresql-config
-              mountPath: /var/lib/postgresql/data
+              mountPath: /var/lib/postgresql/pgdata/data
             {{- end }}
             {{- if .Values.slave.extraVolumeMounts }}
             {{- toYaml .Values.slave.extraVolumeMounts | nindent 12 }}

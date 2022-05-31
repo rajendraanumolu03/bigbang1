@@ -297,7 +297,7 @@ spec:
             {{- end }}
             {{- if or (.Files.Glob "files/conf.d/*.conf") .Values.postgresqlExtendedConf .Values.extendedConfConfigMap }}
             - name: postgresql-extended-config
-              mountPath: /var/lib/postgresql/data/conf.d/
+              mountPath: /var/lib/postgresql/pgdata/data/conf.d/
             {{- end }}
             {{- if .Values.usePasswordFile }}
             - name: postgresql-password
@@ -314,7 +314,7 @@ spec:
             {{- end }}
             {{- if or (.Files.Glob "files/postgresql.conf") (.Files.Glob "files/pg_hba.conf") .Values.postgresqlConfiguration .Values.pgHbaConfiguration .Values.configurationConfigMap }}
             - name: postgresql-config
-              mountPath: /var/lib/postgresql/data
+              mountPath: /var/lib/postgresql/pgdata/data
             {{- end }}
             {{- if .Values.master.extraVolumeMounts }}
             {{- toYaml .Values.master.extraVolumeMounts | nindent 12 }}
