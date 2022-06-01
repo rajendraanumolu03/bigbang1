@@ -123,6 +123,7 @@ spec:
         - name: {{ template "postgresql.fullname" . }}
           image: {{ template "postgresql.image" . }}
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          command: ["set -x && ./usr/local/bin/docker-entrypoint.sh postgres"]
           args: {{ .Values.args }}
           {{- if .Values.resources }}
           resources: {{- toYaml .Values.resources | nindent 12 }}
