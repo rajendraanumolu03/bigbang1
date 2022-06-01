@@ -33,6 +33,8 @@ image:
   ## ref:  https://github.com/bitnami/minideb-extras/#turn-on-bash-debugging
   debug: false
 
+command: ["bash", "-c", "./usr/local/bin/docker-entrypoint.sh postgres --config_file=/bitnami/postgresql/conf/postgresql.conf --hba_file=/bitnami/postgresql/conf/pg_hba.conf"]
+
 ## String to partially override postgresql.fullname template (will maintain the release name)
 ##
 # nameOverride:

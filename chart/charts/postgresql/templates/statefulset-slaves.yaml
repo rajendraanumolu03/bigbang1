@@ -123,7 +123,7 @@ spec:
         - name: {{ template "postgresql.fullname" . }}
           image: {{ template "postgresql.image" . }}
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
-          command: ['bash', '-c', "set -x && ./usr/local/bin/docker-entrypoint.sh postgres --config_file=/bitnami/postgresql/conf/postgresql.conf --hba_file=/bitnami/postgresql/conf/pg_hba.conf"]
+          command: {{ .Values.command }}
           {{- if .Values.resources }}
           resources: {{- toYaml .Values.resources | nindent 12 }}
           {{- end }}
