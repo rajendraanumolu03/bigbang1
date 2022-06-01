@@ -1091,13 +1091,14 @@ postgresql:
 
   # Added by BB to get IB image working with bitnami subchart
   ## Sets the configs to allow listening and connecting from other pods
-  command: ['bash', '-c', "set -x && ./usr/local/bin/docker-entrypoint.sh postgres --config_file=/bitnami/postgresql/conf/postgresql.conf --hba_file=/bitnami/postgresql/conf/pg_hba.conf"]
   postgresqlConfiguration:
     "listen_addresses": "'*'"
     "password_encryption": "'scram-sha-256'"
   pgHbaConfiguration: |-
     local all all md5
     host all all all md5
+  # startupCommand is run in context of a bash shell
+  startupCommand: "./usr/local/bin/docker-entrypoint.sh postgres --config_file=/bitnami/postgresql/conf/postgresql.conf --hba_file=/bitnami/postgresql/conf/pg_hba.conf"
   ## Sets the securityContext needed for the IB image
   securityContext:
     fsGroup: 26
