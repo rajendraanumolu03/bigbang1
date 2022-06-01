@@ -125,7 +125,8 @@ spec:
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
           {{- if .Values.command }}
           command: {{ .Values.command }}
-          {{- end }}          {{- if .Values.resources }}
+          {{- end }}
+          {{- if .Values.resources }}
           resources: {{- toYaml .Values.resources | nindent 12 }}
           {{- end }}
           {{- if .Values.securityContext.enabled }}
