@@ -221,7 +221,7 @@ This is a high-level list of modifitations that Big Bang has made to the upstrea
 - add pullSecrets for each IronBank image
 - add default bigbag.dev hostnames at global.hosts
 - add customCAs (the cert files and secrets need to be added in the next 2 steps for this to work)
-- add `postgresqlConfiguration`, `pgHbaConfiguration`, `securityContext`, `postgresqlDataDir`, `command` and `persistence` to get IB image working with postgres subchart
+- add `postgresqlConfiguration`, `pgHbaConfiguration`, `securityContext`, `postgresqlDataDir`, `startupCommand` and `persistence` to get IB image working with postgres subchart
 
 ## chart/bigbang/*
 - add DoD approved CA certificates (recursive copy directory from previous release)
@@ -272,16 +272,16 @@ This is a high-level list of modifitations that Big Bang has made to the upstrea
 ## chart/charts/postgresql/statefulset.yaml
 - Add `command` to the postgres container
     ```yaml
-    {{- if .Values.command }}
-    command: {{ .Values.command }}
+    {{- if .Values.startupCommand }}
+    command: ['bash', '-c', {{ .Values.startupCommand | quote}}]
     {{- end }}
     ```
 
 ## chart/charts/postgresql/statefulset-slaves.yaml
 - Add `command` to the postgres container
     ```yaml
-    {{- if .Values.command }}
-    command: {{ .Values.command }}
+    {{- if .Values.startupCommand }}
+    command: ['bash', '-c', {{ .Values.startupCommand | quote}}]
     {{- end }}
     ```
 
