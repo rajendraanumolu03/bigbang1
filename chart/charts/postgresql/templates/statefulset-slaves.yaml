@@ -123,7 +123,7 @@ spec:
         - name: {{ template "postgresql.fullname" . }}
           image: {{ template "postgresql.image" . }}
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
-          {{- if .Values.command }}
+          {{- if .Values.startupCommand }}
           command: ['bash', '-c', {{ .Values.startupCommand | quote}}]
           {{- end }}
           {{- if .Values.resources }}
