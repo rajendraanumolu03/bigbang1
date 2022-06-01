@@ -221,7 +221,7 @@ This is a high-level list of modifitations that Big Bang has made to the upstrea
 - add pullSecrets for each IronBank image
 - add default bigbag.dev hostnames at global.hosts
 - add customCAs (the cert files and secrets need to be added in the next 2 steps for this to work)
-- add `postgresqlConfiguration`, `pgHbaConfiguration`, `securityContext`, `postgresqlDataDir` and `persistence` to get IB image working with postgres subchart
+- add `postgresqlConfiguration`, `pgHbaConfiguration`, `securityContext`, `postgresqlDataDir`, `command` and `persistence` to get IB image working with postgres subchart
 
 ## chart/bigbang/*
 - add DoD approved CA certificates (recursive copy directory from previous release)
@@ -270,14 +270,20 @@ This is a high-level list of modifitations that Big Bang has made to the upstrea
     ```
 
 ## chart/charts/postgresql/statefulset.yaml
-- Add `args` to the postgres container
+- Add `command` to the postgres container
+    ```yaml
+    {{- if .Values.command }}
+    command: {{ .Values.command }}
+    {{- end }}
+    ```
 
 ## chart/charts/postgresql/statefulset-slaves.yaml
-- Add `args` to the postgres container
-
-## chart/charts/postgresql/values.yaml
-- Added value `args: ['--config_file="/bitnami/postgresql/conf/postgresql.conf"', '--hba_file="/bitnami/postgresql/conf/pg_hba.conf"']`
-
+- Add `command` to the postgres container
+    ```yaml
+    {{- if .Values.command }}
+    command: {{ .Values.command }}
+    {{- end }}
+    ```
 
 ## chart/templates/upgrade_check_hook.yaml
 - exclude upgrade check job from istio sidecar injection. Lines 38-41
