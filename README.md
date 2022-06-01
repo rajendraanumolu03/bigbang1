@@ -548,7 +548,8 @@ helm install gitlab chart/
 | postgresql.master.extraVolumeMounts[0].subPath | string | `"init_revision.sh"` |  |
 | postgresql.master.podAnnotations."postgresql.gitlab/init-revision" | string | `"1"` |  |
 | postgresql.metrics.enabled | bool | `false` |  |
-| postgresql.postgresqlConfiguration.listen_addresses | string | `"*"` |  |
+| postgresql.postgresqlConfiguration.listen_addresses | string | `"'*'"` |  |
+| postgresql.postgresqlConfiguration.password_encryption | string | `"'scram-sha-256'"` |  |
 | postgresql.pgHbaConfiguration | string | `"local all all md5\nhost all all all md5"` |  |
 | postgresql.securityContext.fsGroup | int | `26` |  |
 | postgresql.securityContext.runAsUser | int | `26` |  |
