@@ -550,7 +550,7 @@ helm install gitlab chart/
 | postgresql.metrics.enabled | bool | `false` |  |
 | postgresql.command[0] | string | `"bash"` |  |
 | postgresql.command[1] | string | `"-c"` |  |
-| postgresql.command[2] | string | `"./usr/local/bin/docker-entrypoint.sh postgres --config_file=/bitnami/postgresql/conf/postgresql.conf --hba_file=/bitnami/postgresql/conf/pg_hba.conf"` |  |
+| postgresql.command[2] | string | `"set -x && ./usr/local/bin/docker-entrypoint.sh postgres --config_file=/bitnami/postgresql/conf/postgresql.conf --hba_file=/bitnami/postgresql/conf/pg_hba.conf"` |  |
 | postgresql.postgresqlConfiguration.listen_addresses | string | `"'*'"` |  |
 | postgresql.postgresqlConfiguration.password_encryption | string | `"'scram-sha-256'"` |  |
 | postgresql.pgHbaConfiguration | string | `"local all all md5\nhost all all all md5"` |  |
