@@ -1095,8 +1095,8 @@ postgresql:
     "listen_addresses": "'*'"
     "password_encryption": "'scram-sha-256'"
   pgHbaConfiguration: |-
-    local all all md5
-    host all all all md5
+    local all all scram-sha-256
+    host all all all scram-sha-256
   # startupCommand is run in context of a bash shell
   startupCommand: "./usr/local/bin/docker-entrypoint.sh postgres --config_file=/bitnami/postgresql/conf/postgresql.conf --hba_file=/bitnami/postgresql/conf/pg_hba.conf"
   ## Sets the securityContext needed for the IB image
