@@ -1099,6 +1099,10 @@ postgresql:
     host all all all scram-sha-256
   # startupCommand is run in context of a bash shell
   startupCommand: "./usr/local/bin/docker-entrypoint.sh postgres --config_file=/bitnami/postgresql/conf/postgresql.conf --hba_file=/bitnami/postgresql/conf/pg_hba.conf"
+  # extraEnv to set scram-sha-256 auth
+  extraEnv:
+    - name: POSTGRES_HOST_AUTH_METHOD
+      value: "scram-sha-256"
   ## Sets the securityContext needed for the IB image
   securityContext:
     fsGroup: 26
