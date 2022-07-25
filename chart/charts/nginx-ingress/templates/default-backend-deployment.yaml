@@ -51,6 +51,10 @@ spec:
           image: "{{- if .repository -}}{{ .repository }}{{ else }}{{ .registry }}/{{ .image }}{{- end -}}:{{ .tag }}{{- if (.digest) -}} @{{.digest}} {{- end -}}"
           {{- end }}
           imagePullPolicy: {{ .Values.defaultBackend.image.pullPolicy }}
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
         {{- if .Values.defaultBackend.extraArgs }}
           args:
           {{- range $key, $value := .Values.defaultBackend.extraArgs }}

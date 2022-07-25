@@ -57,6 +57,10 @@ spec:
       - name: migrations
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ default "" .Values.image.pullPolicy | quote }}
+        securityContext:
+            capabilities:
+              drop:
+                - ALL
         args:
         - /scripts/wait-for-deps
         - /scripts/db-migrate

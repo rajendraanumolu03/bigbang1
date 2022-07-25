@@ -175,6 +175,10 @@ spec:
         - name: {{ $name }}
           image: "{{ $image }}"
           {{- include "gitlab.image.pullPolicy" $imageCfg | indent 10 }}
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
           env:
           {{- if $metricsEnabled }}
             - name: prometheus_multiproc_dir

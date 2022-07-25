@@ -40,6 +40,10 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           image: {{ include "gitlab.kubectl.image" . | quote }}
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
           {{- include "gitlab.image.pullPolicy" $imageCfg | indent 10 }}
           command: ['/bin/bash', '/scripts/generate-secrets']
           volumeMounts:

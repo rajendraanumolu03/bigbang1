@@ -111,6 +111,10 @@ spec:
         - name: registry
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           {{- include "gitlab.image.pullPolicy" $imageCfg | indent 10 }}
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
           env:
           {{- include "gitlab.extraEnv" . | nindent 10 }}
           {{- include "gitlab.extraEnvFrom" (dict "root" $ "local" (dict)) | nindent 10 }}

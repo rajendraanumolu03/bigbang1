@@ -70,6 +70,10 @@ spec:
       - name: kubectl
         image: {{ include "gitlab.kubectl.image" . | quote }}
         {{- include "gitlab.image.pullPolicy" $imageCfgKubectl | indent 8 }}
+        securityContext:
+            capabilities:
+              drop:
+                - ALL
         command:
         - /bin/bash
         - -exc

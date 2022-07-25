@@ -178,6 +178,10 @@ spec:
         - name: {{ $.Chart.Name }}
           image: {{ include "webservice.image" $ }}
           {{- include "gitlab.image.pullPolicy" $imageCfg | indent 10 }}
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
           ports:
             {{- if $.Values.http.enabled }}
             - containerPort: {{ $.Values.service.internalPort }}

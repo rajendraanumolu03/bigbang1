@@ -68,6 +68,10 @@ spec:
         {{- include "gitlab.extraContainers" . | nindent 8 }}
         - name: {{ .Chart.Name }}
           image: "{{ coalesce .Values.image.repository (include "image.repository" .) }}:{{ coalesce .Values.image.tag (include "gitlab.versionTag" . ) }}"
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
           args:
             - /scripts/wait-for-deps
           {{- if include "gitlab.geo.secondary" $ }}

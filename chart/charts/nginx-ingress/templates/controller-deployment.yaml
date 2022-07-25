@@ -86,6 +86,10 @@ spec:
         {{- if .Values.controller.lifecycle }}
           lifecycle: {{ toYaml .Values.controller.lifecycle | nindent 12 }}
         {{- end }}
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
           args:
             - /nginx-ingress-controller
           {{- if .Values.defaultBackend.enabled }}

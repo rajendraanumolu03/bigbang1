@@ -106,6 +106,10 @@ spec:
             {{- end }}
           image: "{{ coalesce .Values.image.repository (include "image.repository" .) }}:{{ coalesce .Values.image.tag (include "gitlab.versionTag" . ) }}"
           {{- include "gitlab.image.pullPolicy" $imageCfg | indent 10 }}
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
           env:
             - name: ARTIFACTS_BUCKET_NAME
               value: {{ .Values.global.appConfig.artifacts.bucket }}
