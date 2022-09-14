@@ -1,6 +1,6 @@
 # gitlab
 
-![Version: 6.3.1-bb.0](https://img.shields.io/badge/Version-6.3.1--bb.0-informational?style=flat-square) ![AppVersion: 15.3.1](https://img.shields.io/badge/AppVersion-15.3.1-informational?style=flat-square)
+![Version: 6.3.1-bb.1](https://img.shields.io/badge/Version-6.3.1--bb.1-informational?style=flat-square) ![AppVersion: 15.3.1](https://img.shields.io/badge/AppVersion-15.3.1-informational?style=flat-square)
 
 The One DevOps Platform
 
@@ -339,6 +339,7 @@ helm install gitlab chart/
 | global.kubectl.image.pullSecrets[0].name | string | `"private-registry"` |  |
 | global.kubectl.securityContext.runAsUser | int | `65534` |  |
 | global.kubectl.securityContext.fsGroup | int | `65534` |  |
+| global.kubectl.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | global.busybox.image.repository | string | `"registry1.dso.mil/ironbank/redhat/ubi/ubi8"` |  |
 | global.busybox.image.tag | string | `"8.6"` |  |
 | global.busybox.image.pullSecrets[0].name | string | `"private-registry"` |  |
@@ -355,6 +356,7 @@ helm install gitlab chart/
 | upgradeCheck.image.pullSecrets[0].name | string | `"private-registry"` |  |
 | upgradeCheck.securityContext.runAsUser | int | `65534` |  |
 | upgradeCheck.securityContext.fsGroup | int | `65534` |  |
+| upgradeCheck.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | upgradeCheck.tolerations | list | `[]` |  |
 | upgradeCheck.annotations."sidecar.istio.io/inject" | string | `"false"` |  |
 | upgradeCheck.resources.requests.cpu | string | `"500m"` |  |
@@ -516,6 +518,7 @@ helm install gitlab chart/
 | redis.containerSecurityContext.enabled | bool | `true` |  |
 | redis.containerSecurityContext.runAsUser | int | `1001` |  |
 | redis.containerSecurityContext.runAsNonRoot | bool | `true` |  |
+| redis.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | redis.image.registry | string | `"registry1.dso.mil/ironbank/bitnami"` |  |
 | redis.image.repository | string | `"redis"` |  |
 | redis.image.tag | string | `"7.0.0-debian-10-r3"` |  |
@@ -567,6 +570,7 @@ helm install gitlab chart/
 | postgresql.securityContext.fsGroup | int | `26` |  |
 | postgresql.securityContext.runAsUser | int | `26` |  |
 | postgresql.securityContext.runAsGroup | int | `26` |  |
+| postgresql.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | postgresql.persistence.mountPath | string | `"/var/lib/postgresql"` |  |
 | postgresql.postgresqlDataDir | string | `"/var/lib/postgresql/pgdata/data"` |  |
 | registry.enabled | bool | `true` |  |
@@ -604,6 +608,7 @@ helm install gitlab chart/
 | shared-secrets.resources.limits.memory | string | `"200Mi"` |  |
 | shared-secrets.securityContext.runAsUser | int | `65534` |  |
 | shared-secrets.securityContext.fsGroup | int | `65534` |  |
+| shared-secrets.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | shared-secrets.tolerations | list | `[]` |  |
 | shared-secrets.podLabels | object | `{}` |  |
 | shared-secrets.annotations."sidecar.istio.io/inject" | string | `"false"` |  |
