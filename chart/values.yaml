@@ -727,6 +727,9 @@ global:
       # in most base images, this is `nobody:nogroup`
       runAsUser: 65534
       fsGroup: 65534
+      capabilities:
+        drop: 
+          - ALL
   busybox:
     image:
       # repository: busybox
@@ -788,6 +791,9 @@ upgradeCheck:
     # in alpine/debian/busybox based images, this is `nobody:nogroup`
     runAsUser: 65534
     fsGroup: 65534
+    capabilities:
+      drop: 
+        - ALL    
   tolerations: []
   annotations:
     sidecar.istio.io/inject: "false"
@@ -1055,6 +1061,9 @@ redis:
     enabled: true
     runAsUser: 1001
     runAsNonRoot: true
+    capabilities:
+      drop: 
+        - ALL
   image:
     registry: registry1.dso.mil/ironbank/bitnami
     repository: redis
@@ -1149,6 +1158,9 @@ postgresql:
     fsGroup: 26
     runAsUser: 26
     runAsGroup: 26
+    capabilities:
+      drop: 
+        - ALL
   ## Sets persistence to work with the IB image
   persistence:
     mountPath: /var/lib/postgresql
@@ -1221,6 +1233,9 @@ shared-secrets:
     # in debian/alpine based images, this is `nobody:nogroup`
     runAsUser: 65534
     fsGroup: 65534
+    capabilities:
+      drop: 
+        - ALL
   tolerations: []
   podLabels: {}
   annotations:
