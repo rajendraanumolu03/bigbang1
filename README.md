@@ -1,10 +1,6 @@
 # gitlab
 
-<<<<<<< HEAD
-![Version: 6.3.2-bb.0](https://img.shields.io/badge/Version-6.3.2--bb.0-informational?style=flat-square) ![AppVersion: 15.3.2](https://img.shields.io/badge/AppVersion-15.3.2-informational?style=flat-square)
-=======
-![Version: 6.3.1-bb.1](https://img.shields.io/badge/Version-6.3.1--bb.1-informational?style=flat-square) ![AppVersion: 15.3.1](https://img.shields.io/badge/AppVersion-15.3.1-informational?style=flat-square)
->>>>>>> 14467e4 (add some cap: drop: alls)
+![Version: 6.3.2-bb.1](https://img.shields.io/badge/Version-6.3.2--bb.1-informational?style=flat-square) ![AppVersion: 15.3.2](https://img.shields.io/badge/AppVersion-15.3.2-informational?style=flat-square)
 
 The One DevOps Platform
 
@@ -343,7 +339,6 @@ helm install gitlab chart/
 | global.kubectl.image.pullSecrets[0].name | string | `"private-registry"` |  |
 | global.kubectl.securityContext.runAsUser | int | `65534` |  |
 | global.kubectl.securityContext.fsGroup | int | `65534` |  |
-| global.kubectl.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | global.busybox.image.repository | string | `"registry1.dso.mil/ironbank/redhat/ubi/ubi8"` |  |
 | global.busybox.image.tag | string | `"8.6"` |  |
 | global.busybox.image.pullSecrets[0].name | string | `"private-registry"` |  |
@@ -360,7 +355,6 @@ helm install gitlab chart/
 | upgradeCheck.image.pullSecrets[0].name | string | `"private-registry"` |  |
 | upgradeCheck.securityContext.runAsUser | int | `65534` |  |
 | upgradeCheck.securityContext.fsGroup | int | `65534` |  |
-| upgradeCheck.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | upgradeCheck.tolerations | list | `[]` |  |
 | upgradeCheck.annotations."sidecar.istio.io/inject" | string | `"false"` |  |
 | upgradeCheck.resources.requests.cpu | string | `"500m"` |  |
@@ -574,7 +568,6 @@ helm install gitlab chart/
 | postgresql.securityContext.fsGroup | int | `26` |  |
 | postgresql.securityContext.runAsUser | int | `26` |  |
 | postgresql.securityContext.runAsGroup | int | `26` |  |
-| postgresql.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | postgresql.persistence.mountPath | string | `"/var/lib/postgresql"` |  |
 | postgresql.postgresqlDataDir | string | `"/var/lib/postgresql/pgdata/data"` |  |
 | registry.enabled | bool | `true` |  |
@@ -612,7 +605,6 @@ helm install gitlab chart/
 | shared-secrets.resources.limits.memory | string | `"200Mi"` |  |
 | shared-secrets.securityContext.runAsUser | int | `65534` |  |
 | shared-secrets.securityContext.fsGroup | int | `65534` |  |
-| shared-secrets.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | shared-secrets.tolerations | list | `[]` |  |
 | shared-secrets.podLabels | object | `{}` |  |
 | shared-secrets.annotations."sidecar.istio.io/inject" | string | `"false"` |  |
@@ -664,6 +656,7 @@ helm install gitlab chart/
 | gitlab.toolbox.backups.cron.resources.requests.memory | string | `"350Mi"` |  |
 | gitlab.toolbox.backups.cron.resources.limits.cpu | string | `"350m"` |  |
 | gitlab.toolbox.backups.cron.resources.limits.memory | string | `"350Mi"` |  |
+| gitlab.toolbox.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | gitlab.gitlab-exporter.enabled | bool | `false` |  |
 | gitlab.gitlab-exporter.init.resources.limits.cpu | string | `"200m"` |  |
 | gitlab.gitlab-exporter.init.resources.limits.memory | string | `"200Mi"` |  |
@@ -679,7 +672,7 @@ helm install gitlab chart/
 | gitlab.gitlab-exporter.metrics.enabled | bool | `true` |  |
 | gitlab.gitlab-exporter.metrics.port | int | `9168` |  |
 | gitlab.gitlab-exporter.metrics.serviceMonitor.enabled | bool | `true` |  |
-| gitlab.migrations.enabled | bool | `true` |  |
+| gitlab.gitlab-exporter.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | gitlab.migrations.annotations."sidecar.istio.io/inject" | string | `"false"` |  |
 | gitlab.migrations.init.resources.limits.cpu | string | `"200m"` |  |
 | gitlab.migrations.init.resources.limits.memory | string | `"200Mi"` |  |
@@ -692,11 +685,12 @@ helm install gitlab chart/
 | gitlab.migrations.image.repository | string | `"registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-toolbox"` |  |
 | gitlab.migrations.image.tag | string | `"15.3.2"` |  |
 | gitlab.migrations.image.pullSecrets[0].name | string | `"private-registry"` |  |
-| gitlab.webservice.enabled | bool | `true` |  |
+| gitlab.migrations.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | gitlab.webservice.init.resources.limits.cpu | string | `"200m"` |  |
 | gitlab.webservice.init.resources.limits.memory | string | `"200Mi"` |  |
 | gitlab.webservice.init.resources.requests.cpu | string | `"200m"` |  |
 | gitlab.webservice.init.resources.requests.memory | string | `"200Mi"` |  |
+| gitlab.webservice.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | gitlab.webservice.resources.limits.cpu | string | `"600m"` |  |
 | gitlab.webservice.resources.limits.memory | string | `"2.5G"` |  |
 | gitlab.webservice.resources.requests.cpu | string | `"600m"` |  |
@@ -717,7 +711,6 @@ helm install gitlab chart/
 | gitlab.webservice.metrics.enabled | bool | `true` |  |
 | gitlab.webservice.metrics.port | int | `8083` |  |
 | gitlab.webservice.metrics.serviceMonitor.enabled | bool | `true` |  |
-| gitlab.sidekiq.enabled | bool | `true` |  |
 | gitlab.sidekiq.image.repository | string | `"registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-sidekiq"` |  |
 | gitlab.sidekiq.image.tag | string | `"15.3.2"` |  |
 | gitlab.sidekiq.image.pullSecrets[0].name | string | `"private-registry"` |  |
@@ -729,6 +722,7 @@ helm install gitlab chart/
 | gitlab.sidekiq.resources.requests.cpu | string | `"1500m"` |  |
 | gitlab.sidekiq.resources.limits.memory | string | `"3G"` |  |
 | gitlab.sidekiq.resources.limits.cpu | string | `"1500m"` |  |
+| gitlab.sidekiq.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | gitlab.gitaly.image.repository | string | `"registry1.dso.mil/ironbank/gitlab/gitlab/gitaly"` |  |
 | gitlab.gitaly.image.tag | string | `"15.3.2"` |  |
 | gitlab.gitaly.image.pullSecrets[0].name | string | `"private-registry"` |  |
@@ -742,7 +736,7 @@ helm install gitlab chart/
 | gitlab.gitaly.resources.limits.memory | string | `"600Mi"` |  |
 | gitlab.gitaly.metrics.enabled | bool | `true` |  |
 | gitlab.gitaly.metrics.serviceMonitor.enabled | bool | `true` |  |
-| gitlab.gitlab-shell.enabled | bool | `true` |  |
+| gitlab.gitaly.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | gitlab.gitlab-shell.image.repository | string | `"registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-shell"` |  |
 | gitlab.gitlab-shell.image.tag | string | `"15.3.2"` |  |
 | gitlab.gitlab-shell.image.pullSecrets[0].name | string | `"private-registry"` |  |
@@ -754,9 +748,11 @@ helm install gitlab chart/
 | gitlab.gitlab-shell.resources.limits.memory | string | `"300Mi"` |  |
 | gitlab.gitlab-shell.resources.requests.cpu | string | `"300m"` |  |
 | gitlab.gitlab-shell.resources.requests.memory | string | `"300Mi"` |  |
+| gitlab.gitlab-shell.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | gitlab.mailroom.image.repository | string | `"registry1.dso.mil/ironbank/gitlab/gitlab/gitlab-mailroom"` |  |
 | gitlab.mailroom.image.tag | string | `"15.3.2"` |  |
 | gitlab.mailroom.image.pullSecrets[0].name | string | `"private-registry"` |  |
+| gitlab.mailroom.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | gitlab.praefect.image.repository | string | `"registry1.dso.mil/ironbank/gitlab/gitlab/gitaly"` |  |
 | gitlab.praefect.image.tag | string | `"15.3.2"` |  |
 | gitlab.praefect.init.resources.limits.cpu | string | `"200m"` |  |
@@ -767,6 +763,7 @@ helm install gitlab chart/
 | gitlab.praefect.resources.requests.memory | string | `"1Gi"` |  |
 | gitlab.praefect.resources.limits.cpu | int | `1` |  |
 | gitlab.praefect.resources.limits.memory | string | `"1Gi"` |  |
+| gitlab.praefect.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | minio.init.resources.limits.cpu | string | `"200m"` |  |
 | minio.init.resources.limits.memory | string | `"200Mi"` |  |
 | minio.init.resources.requests.cpu | string | `"200m"` |  |
