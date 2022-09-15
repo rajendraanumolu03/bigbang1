@@ -727,9 +727,6 @@ global:
       # in most base images, this is `nobody:nogroup`
       runAsUser: 65534
       fsGroup: 65534
-      capabilities:
-        drop: 
-          - ALL
   busybox:
     image:
       # repository: busybox
@@ -790,10 +787,7 @@ upgradeCheck:
   securityContext:
     # in alpine/debian/busybox based images, this is `nobody:nogroup`
     runAsUser: 65534
-    fsGroup: 65534
-    capabilities:
-      drop: 
-        - ALL    
+    fsGroup: 65534    
   tolerations: []
   annotations:
     sidecar.istio.io/inject: "false"
@@ -1158,9 +1152,6 @@ postgresql:
     fsGroup: 26
     runAsUser: 26
     runAsGroup: 26
-    capabilities:
-      drop: 
-        - ALL
   ## Sets persistence to work with the IB image
   persistence:
     mountPath: /var/lib/postgresql
@@ -1233,9 +1224,6 @@ shared-secrets:
     # in debian/alpine based images, this is `nobody:nogroup`
     runAsUser: 65534
     fsGroup: 65534
-    capabilities:
-      drop: 
-        - ALL
   tolerations: []
   podLabels: {}
   annotations:
@@ -1357,6 +1345,10 @@ gitlab:
           limits:
             cpu: 350m
             memory: 350Mi
+    containerSecurityContext:
+      capabilities:
+        drop: 
+          - ALL
 
   gitlab-exporter:
     enabled: false
@@ -1385,6 +1377,11 @@ gitlab:
       port: 9168
       serviceMonitor:
         enabled: true
+    containerSecurityContext:
+      capabilities:
+        drop: 
+          - ALL
+
   ## https://docs.gitlab.com/charts/charts/gitlab/migrations
   migrations:
     # istio sidecar injection for the migration job causes difficult errors. disable istio for this job
@@ -1410,6 +1407,11 @@ gitlab:
       tag: 15.3.2
       pullSecrets:
       - name: private-registry
+    containerSecurityContext:
+      capabilities:
+        drop: 
+          - ALL
+
   ## https://docs.gitlab.com/charts/charts/gitlab/webservice
   webservice:
     init:
@@ -1421,6 +1423,10 @@ gitlab:
         requests:
           cpu: 200m
           memory: 200Mi
+    containerSecurityContext:
+      capabilities:
+        drop: 
+          - ALL
     resources:
       # https://docs.gitlab.com/charts/charts/gitlab/webservice/index.html#memory-requestslimits
       limits:
@@ -1458,6 +1464,7 @@ gitlab:
       port: 8083
       serviceMonitor:
         enabled: true
+
 ## https://docs.gitlab.com/charts/charts/gitlab/sidekiq
   sidekiq:
     image:
@@ -1480,6 +1487,10 @@ gitlab:
       limits:
         memory: 3G
         cpu: 1500m
+    containerSecurityContext:
+      capabilities:
+        drop: 
+          - ALL
 
   ## https://docs.gitlab.com/charts/charts/gitlab/gitaly
   gitaly:
@@ -1507,6 +1518,10 @@ gitlab:
       enabled: true
       serviceMonitor:
         enabled: true
+    containerSecurityContext:
+      capabilities:
+        drop: 
+          - ALL
 
   ## https://docs.gitlab.com/charts/charts/gitlab/gitlab-shell
   gitlab-shell:
@@ -1530,6 +1545,10 @@ gitlab:
       requests:
         cpu: 300m
         memory: 300Mi
+    containerSecurityContext:
+      capabilities:
+        drop: 
+          - ALL
     # metrics:
     #   enabled: true
     #   serviceMonitor:
@@ -1545,6 +1564,10 @@ gitlab:
       tag: 15.3.2
       pullSecrets:
         - name: private-registry
+    containerSecurityContext:
+      capabilities:
+        drop: 
+          - ALL
 
   ## https://docs.gitlab.com/charts/charts/gitlab/gitlab-grafana
   #   gitlab-grafana:
@@ -1572,6 +1595,10 @@ gitlab:
       limits:
         cpu: 1
         memory: 1Gi
+    containerSecurityContext:
+      capabilities:
+        drop: 
+          - ALL
 
 
 ## Override minio sub-chart values
