@@ -1194,6 +1194,10 @@ registry:
     path: /metrics
     serviceMonitor:
       enabled: true
+  containerSecurityContext:
+    capabilities:
+      drop: 
+        - ALL
 
 ## Automatic shared secret generation
 ## https://docs.gitlab.com/charts/installation/secrets
@@ -1228,6 +1232,10 @@ shared-secrets:
     # in debian/alpine based images, this is `nobody:nogroup`
     runAsUser: 65534
     fsGroup: 65534
+  containerSecurityContext:
+    capabilities:
+      drop: 
+        - ALL
   tolerations: []
   podLabels: {}
   annotations:
@@ -1522,7 +1530,7 @@ gitlab:
       enabled: true
       serviceMonitor:
         enabled: true
-    securityContext:
+    containerSecurityContext:
       capabilities:
         drop: 
           - ALL
@@ -1623,6 +1631,10 @@ minio:
     requests:
       cpu: 200m
       memory: 300Mi
+  containerSecurityContext:
+    capabilities:
+      drop: 
+        - ALL
   # Additional job annotations
   jobAnnotations:
     sidecar.istio.io/inject: "false"
