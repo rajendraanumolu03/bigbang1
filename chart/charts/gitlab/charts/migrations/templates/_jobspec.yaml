@@ -44,6 +44,8 @@ spec:
           command: ['sh', '/config/configure']
           image: {{ include "gitlab.busybox.image" (dict "local" .Values.init "global" $.Values.global.busybox) | quote }}
           {{- include "gitlab.image.pullPolicy" $initImageCfg | indent 10 }}
+          securityContext:
+            {{- toYaml $.Values.containerSecurityContext | nindent 12 }}
           env:
           {{- include "gitlab.extraEnv" . | nindent 10 }}
           {{- include "gitlab.extraEnvFrom" (dict "root" $ "local" (dict)) | nindent 10 }}
@@ -68,6 +70,8 @@ spec:
         {{- include "gitlab.extraContainers" . | nindent 8 }}
         - name: {{ .Chart.Name }}
           image: "{{ coalesce .Values.image.repository (include "image.repository" .) }}:{{ coalesce .Values.image.tag (include "gitlab.versionTag" . ) }}"
+          securityContext:
+            {{- toYaml $.Values.containerSecurityContext | nindent 12 }}
           args:
             - /scripts/wait-for-deps
           {{- if include "gitlab.geo.secondary" $ }}
