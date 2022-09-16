@@ -9,6 +9,8 @@
 - name: certificates
   image: "{{ .Values.global.certificates.image.repository }}:{{ .Values.global.certificates.image.tag }}"
   {{- include "gitlab.image.pullPolicy" $imageCfg | indent 2 }}
+  securityContext:
+    {{- toYaml $.Values.containerSecurityContext | nindent 4 }}
   env:
   {{- include "gitlab.extraEnv" . | nindent 2 }}
   {{- include "gitlab.extraEnvFrom" (dict "root" $ "local" (dict)) | nindent 2 }}

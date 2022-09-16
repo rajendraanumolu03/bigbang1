@@ -1122,7 +1122,7 @@ postgresql:
     requests:
       cpu: 500m
       memory: 500Mi
-  securityContext:
+  containerSecurityContext:
     capabilities:
       drop: 
         - ALL
@@ -1522,7 +1522,7 @@ gitlab:
       enabled: true
       serviceMonitor:
         enabled: true
-    containerSecurityContext:
+    securityContext:
       capabilities:
         drop: 
           - ALL
