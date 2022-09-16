@@ -1122,6 +1122,10 @@ postgresql:
     requests:
       cpu: 500m
       memory: 500Mi
+  securityContext:
+    capabilities:
+      drop: 
+        - ALL
   image:
     registry: registry1.dso.mil
     repository: ironbank/opensource/postgres/postgresql12
