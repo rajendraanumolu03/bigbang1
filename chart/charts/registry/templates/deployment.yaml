@@ -80,7 +80,7 @@ spec:
         - name: configure
           image: {{ include "gitlab.busybox.image" (dict "local" .Values.init "global" $.Values.global.busybox) | quote }}
           {{- include "gitlab.image.pullPolicy" $initImageCfg | indent 10 }}
-           securityContext:
+          securityContext:
             {{- toYaml $.Values.containerSecurityContext | nindent 12 }}
           command: ["sh", "/config/configure"]
           volumeMounts:
