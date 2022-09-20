@@ -42,7 +42,7 @@ spec:
           image: {{ include "gitlab.kubectl.image" . | quote }}
           {{- include "gitlab.image.pullPolicy" $imageCfg | indent 10 }}
           securityContext:
-            {{- toYaml $.Values.containerSecurityContext | nindent 12 }}
+            {{- toYaml $sharedSecretValues.containerSecurityContext | nindent 12 }}
           command: ['/bin/bash', '/scripts/generate-secrets']
           volumeMounts:
             - name: scripts

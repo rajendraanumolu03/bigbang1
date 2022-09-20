@@ -45,7 +45,7 @@ spec:
         image: "{{ $sharedSecretValues.selfsign.image.repository }}:{{ $sharedSecretValues.selfsign.image.tag }}"
         {{- include "gitlab.image.pullPolicy" $imageCfgSelfsign | indent 8 }}
         securityContext:
-          {{- toYaml $.Values.containerSecurityContext | nindent 10 }}
+          {{- toYaml $sharedSecretValues.containerSecurityContext | nindent 10 }}
         env:
         - name: CA_SUBJECT
           value: {{ $sharedSecretValues.selfsign.caSubject | quote }} # defaults to GitLab in container
@@ -73,7 +73,7 @@ spec:
         image: {{ include "gitlab.kubectl.image" . | quote }}
         {{- include "gitlab.image.pullPolicy" $imageCfgKubectl | indent 8 }}
         securityContext:
-          {{- toYaml $.Values.containerSecurityContext | nindent 10 }}
+          {{- toYaml $sharedSecretValues.containerSecurityContext | nindent 10 }}
         command:
         - /bin/bash
         - -exc
