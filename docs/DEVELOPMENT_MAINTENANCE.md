@@ -206,6 +206,12 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 ## chart/bigbang/*
 - add DoD approved CA certificates (recursive copy directory from previous release)
 
+## chart/charts/gitlab/charts/gitaly/templates/_service_spec.yaml
+- Change gitaly service spec template. Port name prefix changed from 'grpc' to 'tcp' so that istio injection properly handles the backend communication.
+  ```
+  name: tcp-{{ coalesce .Values.service.name .Values.global.gitaly.service.name }}
+  ```
+
 ## chart/templates/bigbang/*
 - add istio virtual service
 - add networkpolicies
