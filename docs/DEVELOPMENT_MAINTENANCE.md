@@ -11,7 +11,7 @@ BigBang makes modifications to the upstream helm chart. The full list of changes
     export HELM_EXPERIMENTAL_OCI=1
     helm dependency update ./chart
     ```
-1. In ```/chart/values.yaml``` update all the gitlab image tags to the new version. There are about 12 of them.
+1. In ```/chart/values.yaml``` update all the gitlab image tags to the new version. There are about 12 of them. Renovate might have arleady done this for you.
 1. Update /CHANGELOG.md with an entry for "upgrade Gitlab to app version X.X.X chart version X.X.X-bb.X". Or, whatever description is appropriate.
 1. Update the /README.md following the [gluon library script](https://repo1.dso.mil/platform-one/big-bang/apps/library-charts/gluon/-/blob/master/docs/bb-package-readme.md)
 1. Update /chart/Chart.yaml to the appropriate versions. The annotation version should match the ```appVersion```.
@@ -203,22 +203,67 @@ BigBang makes modifications to the upstream helm chart. The full list of changes
 # Modifications made to upstream chart
 This is a high-level list of modifications that Big Bang has made to the upstream helm chart. You can use this as as cross-check to make sure that no modifications were lost during the upgrade process.
 
+## chart/bigbang/*
+- add DoD approved CA certificates (recursive copy directory from previous release)
+
+## chart/templates/bigbang/*
+- add istio virtual service
+- add networkpolicies
+- add istio peerauthentications
+- add Secrets for DoD certificate authorities
+
+## chart/templates/tests/*
+- add templates for CI helm tests
+
+## chart/charts/gitlab/charts/toolbox/templates/backup-job.yaml
+- lines 41-43
+  ```
+    {{- if .Values.global.istio.enabled }}
+      sidecar.istio.io/inject: "false"
+    {{- end }}
+  ```
+
+## chart/charts/minio/templates/_helper_create_buckets.sh
+- hack the MinIO sub-chart to work with newer mc version in IronBank image
+    line 65
+    ```
+    /usr/bin/mc policy set $POLICY myminio/$BUCKET
+    ```
 ##  chart/charts/*.tgz
 - run ```helm dependency update ./chart``` and commit the downloaded archives
-
 - commit the tar archives that were downloaded from the helm dependency update command. And also commit the requirements.lock that was generated.
+
+## chart/tests/*
+- add helm test scripts for CI pipeline
+
+## chart/templates/_certificates.tpl
+- hack to support pki certificate location within the RedHat UBI image. Is different than Debian based images. Add to definition of ```gitlab.certificates.volumeMount```
+    the volumeMount definition is at the end of the file
+    ```
+    - name: etc-ssl-certs
+      mountPath: /etc/pki/tls/certs/
+      readOnly: true
+    - name: etc-ssl-certs
+      mountPath: /etc/pki/tls/cert.pem
+      subPath: ca-bundle.crt
+      readOnly: true
+    ```
 
 ## chart/.gitignore
 - comment the ```charts/*.tgz```
 - comment the ```requirements.lock```
 
+## chart/.helmignore
+- change `scripts/` to `/scripts/` so that the helm test scripts are not ignored
+
 ## chart/requirements.yaml
-- Add gluon dependency to the end of the list
+- Add latest gluon dependency to the end of the list
 ```
 - name: gluon
-  version: "0.2.10"
+  version: "x.x.x"
   repository: "oci://registry.dso.mil/platform-one/big-bang/apps/library-charts/gluon"
 ```
+
 
 ## chart/values.yaml
 - disable all internal services other than postgres, minio, and redis
@@ -234,47 +279,3 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 - add shared-secrets.annotations: sidecar.istio.io/inject: "false"
 - add gitlab.migrations.annotations: sidecar.istio.io/inject: "false"
 - add minio.jobAnnotations: sidecar.istio.io/inject: "false"
-
-## chart/bigbang/*
-- add DoD approved CA certificates (recursive copy directory from previous release)
-
-## chart/templates/bigbang/*
-- add istio virtual service  (temporarily disable istio in values.yaml to test)
-- add Secrets for DoD certificate authorities
-
-## chart/templates/_certificates.tpl
-- hack to support pki certificate location within the RedHat UBI image. Is different than Debian based images. Add to definition of ```gitlab.certificates.volumeMount```
-    the volumeMount definition is at the end of the file
-    ```
-    - name: etc-ssl-certs
-      mountPath: /etc/pki/tls/certs/
-      readOnly: true
-    - name: etc-ssl-certs
-      mountPath: /etc/pki/tls/cert.pem
-      subPath: ca-bundle.crt
-      readOnly: true
-    ```
-
-## chart/charts/minio/templates/_helper_create_buckets.sh
-- hack the MinIO sub-chart to work with newer mc version in IronBank image
-    line 65
-    ```
-    /usr/bin/mc policy set $POLICY myminio/$BUCKET
-    ```
-
-## chart/tests/*
-- add helm test scripts
-
-## chart/templates/tests/*
-- add templates for helm tests
-
-## chart/.helmignore
-- change `scripts/` to `/scripts/` so that the helm test scripts are not ignored
-
-## chart/charts/gitlab/charts/toolbox/templates/backup-job.yaml
-- lines 33-35
-  ```
-    {{- if .Values.global.istio.enabled }}
-      sidecar.istio.io/inject: "false"
-    {{- end }}
-  ```
